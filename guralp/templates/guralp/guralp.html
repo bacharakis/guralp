@@ -1,0 +1,77 @@
+{% extends "foundation/base.html" %} {% block base_body %}
+<div class="row">
+  <h2>Detailed View</h2>
+</div>
+<br>
+<div class="row">
+  <table>
+    <thead>
+      <tr>
+        <th>Prefix</th>
+        <th>IP</th>
+        <th>last update</th>
+        <th>last status changed</th>
+        <th>overall status</th>
+        <th>Sensor</th>
+        <th>Scream</th>
+        <th>GCF</th>
+        <th>GPS</th>
+        <th>Storage</th>
+        <th>System</th>
+
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for guralp in latest_guralp_list %}
+
+      <tr>
+        <td><a href=/guralp/{{ guralp.prefix }}>{{ guralp.prefix }} </a>
+        </td>
+        <td>
+          {{guralp.ip}}
+        </td>
+
+
+        {% for log in log_list %}
+        <td> {{ log.timestamp }} </td>
+        <td> {{ log.status_changed_timestamp }} </td>
+        <td style="background-color:#DE679F"> {{ log.general_status }} </td>
+        <td> {{ log.sensor_status }} </td>
+        <td> {{ log.scream_status }} </td>
+        <td> {{ log.gcf_status }} </td>
+        <td style="background-color:#FF8672"> {{ log.ntp_status }} </td>
+        <td style="background-color:#FF8672"> {{ log.storage_status }} </td>
+        <td> {{ log.system_status }} </td>
+        {%endfor%} {% endfor %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="row">
+  <h3>History</h3>
+</div>
+
+<div class="row">
+
+  <div class="row">
+    <div class="small-3 columns">Nov. 9, 2014, 11:21 a.m.</div>
+    <div class="small-9 columns"><b>GPS:</b> locked</div>
+  </div>
+
+
+  <div class="row">
+    <div class="small-3 columns">Nov. 2, 2014, 10:01 a.m.</div>
+    <div class="small-9 columns"><b>Scream:</b> stopped streaming</div>
+  </div>
+
+  <div class="row">
+    <div class="small-3 columns">Nov. 1, 2014, 00:00 a.m.</div>
+    <div class="small-9 columns"><b>Overall Status:</b> Not reachable</div>
+  </div>
+
+</div>
+
+
+{% endblock base_body %}
