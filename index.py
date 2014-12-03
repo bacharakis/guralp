@@ -6,16 +6,12 @@ import sys
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "guralps.settings")
 
 # your imports, e.g. Django models
-from guralp.models import guralp, NTP,sensor, gcf, scream, Storage
+from guralp.models import guralp, log
 
 guralps = guralp.objects.all()
 guralp = guralp()
+log = log()
 
-gps = NTP()
-sensor = sensor()
-gcf = gcf()
-scream = scream()
-storage = Storage()
 
 for gur in guralps:
   print gur.ip
@@ -35,11 +31,7 @@ for gur in guralps:
     import xml.etree.ElementTree as ET
     root = ET.fromstring(body)
 
-    gps.guralp_prefix = gur.prefix
-    sensor.guralp_prefix = gur.prefix
-    scream.guralp_prefix = gur.prefix
-    gcf.guralp_prefix = gur.prefix
-    storage.guralp_prefix = gur.prefix
+    log.guralp_prefix = gur.prefix
 
 
 
@@ -48,12 +40,14 @@ for gur in guralps:
     for child in root:
       if child.attrib.get("path") == "gcf-in-brp.PortA" :
         for children in child:
-          if children.attrib.get("title") == "Total number of blocks received" :
-            sensor.blocks_received = children.text
-          if children.attrib.get("title") == "Number of bytes received in last 5 minutes" :
-            sensor.last_5_minutes = children.text
+          if children.attrib.get("title") == "Timestamp of last packet received" :
+            log.sensor_last_packet_received = children.text
           if children.attrib.get("title") == "Time of last event" :
-            sensor.last_event = children.text
+            log.sensor_last_event = children.text
+          if children.attrib.get("title") == "Number of blocks received in last 5 minutes" :
+            log.sensor_blocks_rec = children.text
+          if children.attrib.get("title") == "Number of blocks output in last 5 minutes" :
+            log.sensor_blocks_out = children.text
 
     print "parsing GPS"
     #get GPS status
@@ -61,19 +55,19 @@ for gur in guralps:
       if child.attrib.get("title") == "NTP" :
         for children in child:
           if children.attrib.get("title") == "Clock locked" :
-            gps.clock_locked = children.text
+            log.ntp_status = children.text
           if children.attrib.get("title") == "Estimated error" :
-            gps.estimated_error = children.text
+            log.ntp_estimated_error = children.text
 
     print "parsing scream"
     #scream
     for child in root:
       if child.attrib.get("path") == "gcf-out-scream.default" :
         for children in child:
-          if children.attrib.get("title") == "Total number of blocks sent" :
-            scream.blocks_received = children.text
+          if children.attrib.get("title") == "Number of clients connected" :
+            log.scream_clients_connected = children.text
           if children.attrib.get("title") == "Number of blocks sent in last 5 minutes" :
-            scream.last_5_minutes = children.text
+            log.scream_blocks_5 = children.text
 
     print "parsing storage"
     #get storage status
@@ -81,45 +75,51 @@ for gur in guralps:
       if child.attrib.get("title") == "Storage" :
         for children in child:
           if children.attrib.get("title") == "State" :
-            storage.state = children.text
-            print children.text
+            log.storage_state = children.text
           if children.attrib.get("title") == "Last accessed" :
-            storage.last_accessed = children.text
+            log.storage_last_accessed = children.text
           if children.attrib.get("title") == "Free space" :
-            storage.free_space = children.text
+            log.storage_free_space = children.text
           if children.attrib.get("title") == "Storage size" :
-            storage.size = children.text
+            log.storage_size = children.text
+
+    print "parsing system"
+    #get storage status
+    for child in root:
+      if child.attrib.get("title") == "Linux system" :
+        for children in child:
+          if children.attrib.get("title") == "System uptime" :
+            log.system_uptime = children.text
+          if children.attrib.get("title") == "Load Average" :
+            log.system_load = children.text
+          if children.attrib.get("title") == "Root filesystem percentage space free" :
+            log.root_free_filesystem = children.text
+          if children.attrib.get("title") == "Software repository label" :
+            log.system_repo = children.text
+          if children.attrib.get("title") == "Software build number" :
+            log.system_build_number = children.text
+          if children.attrib.get("title") == "Build machine" :
+            log.system_build_machine = children.text
 
     print "parsing gcf"
     #get gcf
     for child in root:
       if child.attrib.get("path") == "gdi2gcf.default" :
         for children in child:
-            if children.attrib.get("title") == "Total number of samples in" :
-              gcf.blocks_received = children.text
             if children.attrib.get("title") == "Number of samples in in last 5 minutes" :
-              gcf.last_5_minutes = children.text
+              log.gcf_last_samples_5_minutes = children.text
+            if children.attrib.get("title") == "Number of blocks out in last 5 minutes" :
+              log.gcf_last_blocks_5_minutes = children.text
+            if children.attrib.get("title") == "Total number of blocks out" :
+              log.gcf_blocks_out = children.text
 
-sensor.blocks_received_status = 0
-scream.blocks_received_status = 0
-gcf.blocks_received_status = 0
 guralp.last_update = datetime.now()
-sensor.last_update = datetime.now()
-scream.last_update = datetime.now()
-gcf.last_event = datetime.now()
-sensor.last_event = datetime.now()
-scream.last_event = datetime.now()
-gcf.last_update = datetime.now()
-gps.last_update = datetime.now()
-storage.last_update = datetime.now()
-
+log.timestamp = datetime.now()
+#print guralp.last_update
 print "saving parsing"
+log.save()
 guralp.save()
-sensor.save()
-scream.save()
-gcf.save()
-gps.save()
-storage.save()
+
 
 print "=============== success ================"
 
