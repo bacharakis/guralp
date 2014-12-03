@@ -15,7 +15,7 @@ def index(request):
     return render(request, 'guralp/index.html', context)
 
 def detail(request, guralp_prefix):
-    log_list = log.objects.filter(guralps_prefix="SEIS")
+    log_list = log.objects.filter(guralp_prefix="SEIS")
     latest_guralp_list = guralp.objects.all()
     context = {'latest_guralp_list' : latest_guralp_list , 'log_list' : log_list }
 
