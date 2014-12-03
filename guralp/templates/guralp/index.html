@@ -14,15 +14,15 @@
 
         <tr>
           <th>Prefix</th>
-          <th>last update</th>
+          <th>timestamp</th>
           <th>last status changed</th>
-          <th>overall status</th>
-          <th>Sensor</th>
-          <th>Scream</th>
-          <th>GCF</th>
-          <th>GPS</th>
-          <th>Storage</th>
-          <th>System</th>
+          <th>sensor</th>
+          <th>scream blocks</th>
+          <th>gcf blocks</th>
+          <th>gps</th>
+          <th>storage</th>
+          <th>load</th>
+          <th>uptime</th>
 
         </tr>
       </thead>
@@ -37,14 +37,14 @@
           {% for log in log_list %}
           <td> {{ log.timestamp }} </td>
           <td> {{ log.status_changed_timestamp }} </td>
-          <td style="background-color:#DE679F"> {{ log.general_status }} </td>
-          <td> {{ log.sensor_status }} </td>
-          <td> {{ log.scream_status }} </td>
-          <td> {{ log.gcf_status }} </td>
-          <td style="background-color:#FF8672"> {{ log.ntp_status }} </td>
-          <td style="background-color:#FF8672"> {{ log.storage_status }} </td>
-          <td> {{ log.system_status }} </td>
-{%endfor%}
+          <td> {{ log.sensor_last_event }} </td>
+          <td> {{ log.scream_blocks_5 }} </td>
+          <td> {{ log.gcf_last_blocks_5_minutes }} </td>
+          <td> {{ log.ntp_status }} </td>
+          <td style="background-color:#FF8672"> {{ log.storage_state }} </td>
+          <td style="background-color:#FF8672"> {{ log.system_load }} </td>
+          <td> {{ log.system_uptime }} </td>
+            {%endfor%}
 
           {% endfor %}
         </tr>
