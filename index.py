@@ -1,6 +1,6 @@
 import pycurl
 from datetime import datetime
-from io import BytesIO
+from StringIO import StringIO
 import os
 import sys
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "guralps.settings")
@@ -17,10 +17,10 @@ for gur in guralps:
   print gur.ip
   if gur.prefix != "":
     print "Parsing "+gur.prefix
-    buffer = BytesIO()
+    buffer = StringIO()
     c = pycurl.Curl()
-    c.setopt(c.URL, 'http://'+gur.ip+'/cgi-bin/xmlstatus.cgi?download_xml=true')
-    c.setopt(c.WRITEDATA, buffer)
+    c.setopt(c.URL, 'http://'+gur.ip.encode("ascii")+'/cgi-bin/xmlstatus.cgi?download_xml=true')
+    c.setopt(c.WRITEFUNCTION, buffer.write)
     c.perform()
     c.close()
 
