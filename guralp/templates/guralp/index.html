@@ -35,6 +35,7 @@
 
 
           {% for log in log_list %}
+          {% if guralp.prefix = log.guralp_prefix %}
           <td> {{ log.timestamp }} </td>
           <td> {{ log.status_changed_timestamp }} </td>
           <td> {{ log.sensor_last_event }} </td>
@@ -44,6 +45,7 @@
           <td style="background-color:#FF8672"> {{ log.storage_state }} </td>
           <td style="background-color:#FF8672"> {{ log.system_load }} </td>
           <td> {{ log.system_uptime }} </td>
+          {%endif%}
             {%endfor%}
 
           {% endfor %}
