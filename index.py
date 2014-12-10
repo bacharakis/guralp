@@ -122,8 +122,3 @@ guralp.save()
 
 
 print "=============== success ================"
-
-
-html_file = open("index.html", "w")
-html_file.write(body)
-html_file.close()
