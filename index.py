@@ -35,6 +35,37 @@ for gur in guralps:
       log.guralp_prefix = gur.prefix
 
 
+      guralp_prefix = "NULL"
+      timestamp = "NULL"
+      status_changed_timestamp = "NULL"
+      general_status = "NULL"
+
+      sensor_blocks_out  = "NULL"
+      sensor_blocks_rec = "NULL"
+      sensor_last_event = "NULL"
+      sensor_last_packet_received = "NULL"
+
+      scream_clients_connected  = "NULL"
+      scream_blocks_5 =  "NULL"
+
+      gcf_blocks_out = "NULL"
+      gcf_last_blocks_5_minutes = "NULL"
+      gcf_last_samples_5_minutes = "NULL"
+
+      ntp_status = "NULL"
+      ntp_estimated_error = "NULL"
+      storage_state = "NULL"
+      storage_last_accessed = "NULL"
+      storage_size = "NULL"
+      storage_free_space = "NULL"
+
+      system_build_machine  = "NULL"
+      system_build_number = "NULL"
+      system_repo = "NULL"
+      root_free_filesystem = "NULL"
+      system_load = "NULL"
+      system_uptime = "NULL"
+
 
       print "parsing sensor"
       #get sensor status
