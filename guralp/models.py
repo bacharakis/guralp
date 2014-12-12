@@ -15,6 +15,38 @@ class guralp(models.Model):
   installed = models.CharField(max_length=30, null=True)
   status = models.CharField(max_length=30, null=True)
 
+class status(models.Model):
+  guralp_prefix = models.CharField(max_length=50 ,null=True)
+  timestamp = models.CharField(max_length=50 ,null=True)
+  status_changed_timestamp = models.CharField(max_length=50 ,null=True)
+  general_status = models.CharField(max_length=50 ,null=True)
+
+  sensor_blocks_out  = models.CharField(max_length=50 ,null=True)
+  sensor_blocks_rec = models.CharField(max_length=50 ,null=True)
+  sensor_last_event = models.CharField(max_length=50 ,null=True)
+  sensor_last_packet_received = models.CharField(max_length=50 ,null=True)
+
+  scream_clients_connected  = models.CharField(max_length=50 ,null=True)
+  scream_blocks_5 =  models.CharField(max_length=50 ,null=True)
+
+  gcf_blocks_out = models.CharField(max_length=50 ,null=True)
+  gcf_last_blocks_5_minutes = models.CharField(max_length=50 ,null=True)
+  gcf_last_samples_5_minutes = models.CharField(max_length=50 ,null=True)
+
+  ntp_status = models.CharField(max_length=50 ,null=True)
+  ntp_estimated_error = models.CharField(max_length=50 ,null=True)
+  storage_state = models.CharField(max_length=50 ,null=True)
+  storage_last_accessed = models.CharField(max_length=50 ,null=True)
+  storage_size = models.CharField(max_length=50 ,null=True)
+  storage_free_space = models.CharField(max_length=50 ,null=True)
+
+  system_build_machine  = models.CharField(max_length=50,null=True)
+  system_build_number = models.CharField(max_length=50,null=True)
+  system_repo = models.CharField(max_length=50,null=True)
+  root_free_filesystem = models.CharField(max_length=50,null=True)
+  system_load = models.CharField(max_length=50,null=True)
+  system_uptime = models.CharField(max_length=50,null=True)
+
 class log(models.Model):
   guralp_prefix = models.CharField(max_length=50 ,null=True)
   timestamp = models.CharField(max_length=50 ,null=True)
