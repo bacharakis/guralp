@@ -3,6 +3,8 @@ from django.db import models
 # Create your models here.
 
 class guralp(models.Model):
+  def __str__(self):              # __unicode__ on Python 2
+        return self.prefix
   prefix = models.CharField(max_length=5)
   last_update = models.DateTimeField('date updated')
   ip = models.CharField(max_length=30)
@@ -16,6 +18,8 @@ class guralp(models.Model):
   status = models.CharField(max_length=30, null=True)
 
 class status(models.Model):
+  def __str__(self):              # __unicode__ on Python 2
+        return self.guralp_prefix
   guralp_prefix = models.CharField(max_length=50 ,null=True)
   timestamp = models.CharField(max_length=50 ,null=True)
   status_changed_timestamp = models.CharField(max_length=50 ,null=True)
@@ -48,6 +52,8 @@ class status(models.Model):
   system_uptime = models.CharField(max_length=50,null=True)
 
 class log(models.Model):
+  def __str__(self):              # __unicode__ on Python 2
+        return self.guralp_prefix
   guralp_prefix = models.CharField(max_length=50 ,null=True)
   timestamp = models.CharField(max_length=50 ,null=True)
   status_changed_timestamp = models.CharField(max_length=50 ,null=True)
