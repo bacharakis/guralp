@@ -2,7 +2,7 @@ guralps/settings.py
 guralps/settings.pyc
 guralp/__init__.pyc
 guralp/admin.pyc
-guralp/urls/pyc
+guralp/urls.pyc
 guralp/views.pyc
 guralp/models.pyc
 guralp/views/pyc
