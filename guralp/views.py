@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from guralp.models import guralp, log
+from guralp.models import guralp, log, status
 import pycurl
 from io import BytesIO
 
@@ -14,9 +14,10 @@ def index(request):
 
     return render(request, 'guralp/index.html', context)
 
-def detail(request, guralp):
-    log_list = log.objects.filter(guralp_prefix=guralp)
-    guralp_details = guralp.objects.filter(guralp_prefix=guralp)
-    context = {'guralp_details' : guralp_details , 'log_list' : log_list }
+def detail(request, guralpre):
+    log_list = log.objects.filter(guralp_prefix=guralpre)
+    status_list = status.objects.filter(guralp_prefix=guralpre)
+    guralp_details = guralp.objects.filter(prefix=guralpre)
+    context = {'guralp_details' : guralp_details , 'log_list' : log_list , 'status_list' : status_list }
 
     return render(request, 'guralp/guralp.html', context)
