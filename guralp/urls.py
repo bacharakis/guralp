@@ -5,6 +5,6 @@ from guralp import views
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
     # ex: /polls/5/
-    url(r'^(?P<guralp_prefix>\w+)/$', views.detail, name='detail'),
+    url(r'^(?P<guralpre>\w+)/$', views.detail, name='detail'),
 
 )
