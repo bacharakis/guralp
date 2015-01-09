@@ -14,7 +14,8 @@
 
         <tr>
           <th>Prefix</th>
-          <th>timestamp</th>
+          <th>Manual Test</th>
+          <th>Latest Pole</th>
           <th>last status changed</th>
           <th>sensor</th>
           <th>scream blocks</th>
@@ -32,6 +33,7 @@
 
         <tr>
           <td><a href=/guralp/{{ guralp.prefix }}>{{ guralp.prefix }} </a></td>
+          <td> {{ guralp.status }} </td>
 
 
           {% for log in log_list %}
@@ -42,7 +44,7 @@
           <td> {{ log.scream_blocks_5 }} </td>
           <td> {{ log.gcf_last_blocks_5_minutes }} </td>
           <td> {{ log.ntp_status }} </td>
-          <td style="background-color:#FF8672"> {{ log.storage_state }} </td>
+          <td> {{ log.storage_state }} </td>
           <td style="background-color:#FF8672"> {{ log.system_load }} </td>
           <td> {{ log.system_uptime }} </td>
           {%endif%}
