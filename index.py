@@ -5,7 +5,7 @@ import os
 import sys
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "guralps.settings")
 import django
-django.setup()
+#django.setup()
 
 # your imports, e.g. Django models
 from guralp.models import guralp, log, status
