@@ -177,6 +177,7 @@
   <table>
     <thead>
       <tr>
+        <th>Date</th>
         <th>Blocks out</th>
         <th>Blocks received</th>
         <th>Clients</th>
@@ -191,6 +192,7 @@
     <tbody>
       <tr>
         {% for status_entry in status_list %}
+        <td> {{ status_entry.timestamp}} </td>
         <td> {{ status_entry.sensor_blocks_out}} </td>
         <td> {{ status_entry.sensor_blocks_rec}}
           <td> {{ status_entry.scream_clients_connected }} </td>
