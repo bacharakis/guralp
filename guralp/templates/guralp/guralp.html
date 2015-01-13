@@ -11,19 +11,10 @@
         <th>IP</th>
         <th>last update</th>
         <th>last status changed</th>
-        <th>overall status</th>
-        <th>Sensor</th>
-        <th>Scream</th>
-        <th>GCF</th>
-        <th>GPS</th>
-        <th>Storage</th>
-        <th>System</th>
-
       </tr>
     </thead>
     <tbody>
-
-      {% for guralp in latest_guralp_list %}
+      {% for guralp in guralp_details %}
 
       <tr>
         <td><a href=/guralp/{{ guralp.prefix }}>{{ guralp.prefix }} </a>
@@ -32,46 +23,191 @@
           {{guralp.ip}}
         </td>
 
-
         {% for log in log_list %}
         <td> {{ log.timestamp }} </td>
         <td> {{ log.status_changed_timestamp }} </td>
         <td style="background-color:#DE679F"> {{ log.general_status }} </td>
-        <td> {{ log.sensor_status }} </td>
-        <td> {{ log.scream_status }} </td>
-        <td> {{ log.gcf_status }} </td>
-        <td style="background-color:#FF8672"> {{ log.ntp_status }} </td>
-        <td style="background-color:#FF8672"> {{ log.storage_status }} </td>
-        <td> {{ log.system_status }} </td>
+
         {%endfor%} {% endfor %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="row">
+  <h3>Sensor</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Blocks out</th>
+        <th>Blocks Received</th>
+        <th>Last event</th>
+        <th>Last packet received</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for log in log_list %}
+        <td> {{ log.sensor_blocks_out}} </td>
+        <td> {{ log.sensor_blocks_rec }} </td>
+        <td> {{ log.sensor_last_event }} </td>
+        <td> {{ log.sensor_last_packet_received }} </td>
+
+        {%endfor%}
       </tr>
     </tbody>
   </table>
 </div>
 
 <div class="row">
-  <h3>History</h3>
+  <h3>GCF</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Number of blocks out</th>
+        <th>Blocks out in last 5 minutes</th>
+        <th>Samples in last 5 minutes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for log in log_list %}
+        <td> {{ log.gcf_blocks_out}} </td>
+        <td> {{ log.gcf_last_blocks_5_minutes }} </td>
+        <td> {{ log.gcf_last_samples_5_minutes }} </td>
+        {%endfor%}
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <div class="row">
-
-  <div class="row">
-    <div class="small-3 columns">Nov. 9, 2014, 11:21 a.m.</div>
-    <div class="small-9 columns"><b>GPS:</b> locked</div>
-  </div>
-
-
-  <div class="row">
-    <div class="small-3 columns">Nov. 2, 2014, 10:01 a.m.</div>
-    <div class="small-9 columns"><b>Scream:</b> stopped streaming</div>
-  </div>
-
-  <div class="row">
-    <div class="small-3 columns">Nov. 1, 2014, 00:00 a.m.</div>
-    <div class="small-9 columns"><b>Overall Status:</b> Not reachable</div>
-  </div>
-
+  <h3>Scream</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Clients connected</th>
+        <th>Blocks sent in last 5 minutes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for log in log_list %}
+        <td> {{ log.scream_clients_connected}} </td>
+        <td> {{ log.sensor_blocks_5 }} </td>
+        {%endfor%}
+      </tr>
+    </tbody>
+  </table>
 </div>
+
+<div class="row">
+  <h3>GPS</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Status</th>
+        <th>Estimated error</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for log in log_list %}
+        <td> {{ log.ntp_status}} </td>
+        <td> {{ log.ntp_estimated_error }} </td>
+        {%endfor%}
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="row">
+  <h3>Storage</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>State</th>
+        <th>Size</th>
+        <th>Last accessed</th>
+        <th>Free space</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        {% for log in log_list %}
+        <td> {{ log.storage_state}} </td>
+        <td> {{ log.storage_size }}
+        <td> {{ log.storage_last_accessed }} </td>
+        <td> {{ log.storage_free_space }} </td>
+ {% endfor %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="row">
+  <h3>System</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Uptime</th>
+        <th>Load</th>
+        <th>Root free space</th>
+        <th>Repo label</th>
+        <th>Build number</th>
+        <th>Build machine</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for log in log_list %}
+        <td> {{ log.system_uptime}} </td>
+        <td> {{ log.system_load }}
+          <td> {{ log.root_free_filesystem }} </td>
+          <td> {{ log.system_repo }} </td>
+          <td> {{ log.system_build_number }} </td>
+          <td> {{ log.system_build_machine }} </td>
+          {% endfor %}
+        </tr>
+      </tbody>
+    </table>
+  </div>
+<div class="row">
+  <h3>History</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Blocks out</th>
+        <th>Blocks received</th>
+        <th>Clients</th>
+        <th>Scream Blocks</th>
+        <th>GCF last blocks</th>
+        <th>GCF last samples</th>
+        <th>Ntp status</th>
+        <th>Storage</th>
+        <th>Size</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for status_entry in status_list %}
+        <td> {{ status_entry.timestamp}} </td>
+        <td> {{ status_entry.sensor_blocks_out}} </td>
+        <td> {{ status_entry.sensor_blocks_rec}}
+          <td> {{ status_entry.scream_clients_connected }} </td>
+          <td> {{ status_entry.scream_blocks_5}} </td>
+          <td> {{ status_entry.gcf_last_blocks_5_minutes }} </td>
+          <td> {{ status_entry.gcf_last_samples_5_minutes }} </td>
+          <td> {{ status_entry.ntp_status }} </td>
+          <td> {{ status_entry.storage_state }} </td>
+          <td> {{ status_entry.storage_size }} </td>
+          {% endfor %}
+        </tr>
+      </tbody>
+    </table>
+</div>
+
 
 
 {% endblock base_body %}

@@ -13,16 +13,19 @@
       <thead>
 
         <tr>
-          <th>Prefix</th>
-          <th>timestamp</th>
-          <th>last status changed</th>
-          <th>sensor</th>
-          <th>scream blocks</th>
-          <th>gcf blocks</th>
-          <th>gps</th>
-          <th>storage</th>
-          <th>load</th>
-          <th>uptime</th>
+          <th>Station</th>
+          <th>Manual Check</th>
+          <th>Latest Pole</th>
+          <th>Last Status Changed</th>
+          <th>Sensor</th>
+          <th>Scream Blocks</th>
+          <th>Gcf Blocks</th>
+          <th>GPS</th>
+          <th>Storage</th>
+          <th>Data Free Space</th>
+          <th>System Free Space</th>
+          <th>Load</th>
+          <th>Uptime</th>
 
         </tr>
       </thead>
@@ -30,16 +33,37 @@
         <tr>
           
           <td><a href=/guralp/{{ guralp.prefix }}>{{ guralp.prefix }} </a></td>
+<<<<<<< HEAD
           {% for log in log_list %}{% if guralp.prefix = log.guralp_prefix %}
+=======
+          <td> {{ guralp.status }} </td>
+
+
+          {% for log in log_list %}
+          {% if guralp.prefix = log.guralp_prefix %}
+>>>>>>> 8d4e9c402875ded0f054d50bc8ba151862c15990
           <td> {{ log.timestamp }} </td>
           <td> {{ log.status_changed_timestamp }} </td>
           <td> {{ log.sensor_last_event }} </td>
           <td> {{ log.scream_blocks_5 }} </td>
           <td> {{ log.gcf_last_blocks_5_minutes }} </td>
+<<<<<<< HEAD
           <td> {{ log.ntp_status }} </td>
           <td style="background-color:#FF8672"> {{ log.storage_state }} </td>
           <td style="background-color:#FF8672"> {{ log.system_load }} </td>
           <td> {{ log.system_uptime }} </td>{%endif%}{%endfor%}{% endfor %}
+=======
+          <td> {% if log.ntp_status = "true" %} OK! {% elif log.ntp_status = "false" %} <span style="color:blue"> Error! </span> {%endif%}</td>
+          <td> {% if log.storage_state = "Inactive" %} OK! {%else%} {{ log.storage_state }} {%endif%} </td>
+          <td> {{ log.storage_free_space }} </td>
+          <td> {{ log.root_free_filesystem }} </td>
+          <td> {{ log.system_load }} </td>
+          <td> {{ log.system_uptime }} </td>
+          {%endif%}
+            {%endfor%}
+
+          {% endfor %}
+>>>>>>> 8d4e9c402875ded0f054d50bc8ba151862c15990
         </tr>
       </tbody>
     </table>
