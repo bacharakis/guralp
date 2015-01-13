@@ -26,16 +26,11 @@
 
         </tr>
       </thead>
-      <tbody>
-
-        {% for guralp in latest_guralp_list %}
-
+      <tbody>{% for guralp in latest_guralp_list %}
         <tr>
+          
           <td><a href=/guralp/{{ guralp.prefix }}>{{ guralp.prefix }} </a></td>
-
-
-          {% for log in log_list %}
-          {% if guralp.prefix = log.guralp_prefix %}
+          {% for log in log_list %}{% if guralp.prefix = log.guralp_prefix %}
           <td> {{ log.timestamp }} </td>
           <td> {{ log.status_changed_timestamp }} </td>
           <td> {{ log.sensor_last_event }} </td>
@@ -44,11 +39,7 @@
           <td> {{ log.ntp_status }} </td>
           <td style="background-color:#FF8672"> {{ log.storage_state }} </td>
           <td style="background-color:#FF8672"> {{ log.system_load }} </td>
-          <td> {{ log.system_uptime }} </td>
-          {%endif%}
-            {%endfor%}
-
-          {% endfor %}
+          <td> {{ log.system_uptime }} </td>{%endif%}{%endfor%}{% endfor %}
         </tr>
       </tbody>
     </table>
