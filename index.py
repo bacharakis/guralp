@@ -142,9 +142,9 @@ for gur in guralps:
                 log_entry.gcf_blocks_out = children.text
                 status_entry.gcf_blocks_out = children.text
 
-      guralp.last_update = datetime.now()
-      log_entry.timestamp = datetime.now()
-      status_entry.timestamp = datetime.now()
+      guralp.last_update = datetime.now().replace(microsecond=0)
+      log_entry.timestamp = datetime.now().replace(microsecond=0)
+      status_entry.timestamp = datetime.now().replace(microsecond=0)
       #print guralp.last_update
       print "------------------"
       print "saving parsing"
