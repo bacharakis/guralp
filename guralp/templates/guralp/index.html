@@ -1,7 +1,6 @@
 {% extends "foundation/base.html" %} {% block base_body %}
-
-
-
+{% load static %}
+<script src="{% static 'sorttable.js' %}" type="text/javascript"></script>
 <div class="row">
   <h3>  Welcome to Guralp Monitor tool</h3>
 </div>
@@ -16,7 +15,7 @@
   <div class="tabs-content">
     <div class="content active" id="panel1">
       <div class="row">
-    <table>
+    <table class="sortable">
       <thead>
 
         <tr>
