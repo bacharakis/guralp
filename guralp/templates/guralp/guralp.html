@@ -28,10 +28,12 @@
         <td> {{ log.status_changed_timestamp }} </td>
         <td style="background-color:#DE679F"> {{ log.general_status }} </td>
 
-        {%endfor%} {% endfor %}
+        {%endfor%}
       </tr>
     </tbody>
   </table>
+  <a href="{% url 'admin:index' %}guralp/guralp/{{guralp.id}}" class="button tiny">Edit station</a>
+  {% endfor %}
 </div>
 <div class="row">
   <h3>Sensor</h3>
