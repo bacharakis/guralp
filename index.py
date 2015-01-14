@@ -107,8 +107,10 @@ for gur in guralps:
         if child.attrib.get("title") == "Linux system" :
           for children in child:
             if children.attrib.get("title") == "System uptime" :
-              log_entry.system_uptime = children.text
-              status_entry.system_uptime = children.text
+              uptime = (float(children.text) / 3600 )/ 24
+              uptime = "%.2f" % uptime
+              log_entry.system_uptime = uptime
+              status_entry.system_uptime = uptime
             if children.attrib.get("title") == "Load Average" :
               log_entry.system_load = children.text
               status_entry.system_load = children.text
