@@ -7,7 +7,8 @@ from io import BytesIO
 # Create your views here.
 def index(request):
 
-    latest_guralp_list = guralp.objects.all()
+#    latest_guralp_list = guralp.objects.all()
+    latest_guralp_list = guralp.objects.order_by('prefix')
     log_list = log.objects.all()
 
     context = {'latest_guralp_list': latest_guralp_list ,'log_list' : log_list }
