@@ -11,6 +11,8 @@
         <th>IP</th>
         <th>last update</th>
         <th>last status changed</th>
+        <th>Address</th>
+        <th>Building</th>
       </tr>
     </thead>
     <tbody>
@@ -26,12 +28,16 @@
         {% for log in log_list %}
         <td> {{ log.timestamp }} </td>
         <td> {{ log.status_changed_timestamp }} </td>
-        <td style="background-color:#DE679F"> {{ log.general_status }} </td>
+        <td>{{guralp.address}}</td>
+        <td>{{guralp.building}}</td>
 
-        {%endfor%} {% endfor %}
+
+        {%endfor%}
       </tr>
     </tbody>
   </table>
+  <a href="{% url 'admin:index' %}guralp/guralp/{{guralp.id}}" class="button tiny">Edit station</a>
+  {% endfor %}
 </div>
 <div class="row">
   <h3>Sensor</h3>

@@ -107,8 +107,10 @@ for gur in guralps:
         if child.attrib.get("title") == "Linux system" :
           for children in child:
             if children.attrib.get("title") == "System uptime" :
-              log_entry.system_uptime = children.text
-              status_entry.system_uptime = children.text
+              uptime = (float(children.text) / 3600 )/ 24
+              uptime = "%.2f" % uptime
+              log_entry.system_uptime = uptime
+              status_entry.system_uptime = uptime
             if children.attrib.get("title") == "Load Average" :
               log_entry.system_load = children.text
               status_entry.system_load = children.text
@@ -140,9 +142,9 @@ for gur in guralps:
                 log_entry.gcf_blocks_out = children.text
                 status_entry.gcf_blocks_out = children.text
 
-      guralp.last_update = datetime.now()
-      log_entry.timestamp = datetime.now()
-      status_entry.timestamp = datetime.now()
+      guralp.last_update = datetime.now().replace(microsecond=0)
+      log_entry.timestamp = datetime.now().replace(microsecond=0)
+      status_entry.timestamp = datetime.now().replace(microsecond=0)
       #print guralp.last_update
       print "------------------"
       print "saving parsing"

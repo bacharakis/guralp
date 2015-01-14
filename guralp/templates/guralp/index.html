@@ -7,8 +7,15 @@
 </div>
 <p>
 
-  <div class="row">
 
+<div class="row">
+  <dl class="tabs" data-tab>
+    <dd class="active"><a href="#panel1">Status</a></dd>
+    <dd><a href="#panel2">Static info</a></dd>
+  </dl>
+  <div class="tabs-content">
+    <div class="content active" id="panel1">
+      <div class="row">
     <table>
       <thead>
 
@@ -29,34 +36,82 @@
 
         </tr>
       </thead>
-      <tbody>
-
-        {% for guralp in latest_guralp_list %}
-
+      <tbody>{% for guralp in latest_guralp_list %}
         <tr>
+
           <td><a href=/guralp/{{ guralp.prefix }}>{{ guralp.prefix }} </a></td>
+
+          {% for log in log_list %}{% if guralp.prefix = log.guralp_prefix %}
           <td> {{ guralp.status }} </td>
 
-
-          {% for log in log_list %}
-          {% if guralp.prefix = log.guralp_prefix %}
           <td> {{ log.timestamp }} </td>
           <td> {{ log.status_changed_timestamp }} </td>
           <td> {{ log.sensor_last_event }} </td>
           <td> {{ log.scream_blocks_5 }} </td>
           <td> {{ log.gcf_last_blocks_5_minutes }} </td>
+
           <td> {% if log.ntp_status = "true" %} OK! {% elif log.ntp_status = "false" %} <span style="color:blue"> Error! </span> {%endif%}</td>
           <td> {% if log.storage_state = "Inactive" %} OK! {%else%} {{ log.storage_state }} {%endif%} </td>
           <td> {{ log.storage_free_space }} </td>
           <td> {{ log.root_free_filesystem }} </td>
           <td> {{ log.system_load }} </td>
           <td> {{ log.system_uptime }} </td>
-          {%endif%}
+              {%endif%}
             {%endfor%}
 
           {% endfor %}
+
         </tr>
       </tbody>
     </table>
   </div>
+</div>
+
+<div class="content" id="panel2">
+  <table>
+    <thead>
+
+      <tr>
+        <th>Station</th>
+        <th>IP</th>
+        <th>Subnet mask</th>
+        <th>Gateway</th>
+        <th>Internap ip</th>
+        <th>Region</th>
+        <th>Building</th>
+        <th>Address</th>
+        <th>Version</th>
+        <th>Number</th>
+        <th>Edit station</th>
+
+      </tr>
+    </thead>
+    <tbody>{% for guralp in latest_guralp_list %}
+      <tr>
+
+        <td><a href=/guralp/{{ guralp.prefix }}>{{ guralp.prefix }} </a></td>
+        <td>{{guralp.ip}}</td>
+        <td>{{guralp.subnet_mask}}</td>
+        <td>{{guralp.gateway}}</td>
+        <td>{{guralp.internal_ip}}</td>
+        <td>{{guralp.region}}</td>
+        <td>{{guralp.building}}</td>
+        <td>{{guralp.address}}</td>
+        {% for log in log_list %}{% if guralp.prefix = log.guralp_prefix %}
+        <td>{{log.system_build_machine}}</td>
+        <td>{{log.system_build_number}}</td>
+        {%endif%}
+        {%endfor%}
+        <td> <a href="{% url 'admin:index' %}guralp/guralp/{{guralp.id}}">Edit</a><td>
+
+        {% endfor %}
+
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+</div>
+</div>
   {% endblock base_body %}
