@@ -11,6 +11,8 @@
         <th>IP</th>
         <th>last update</th>
         <th>last status changed</th>
+        <th>Address</th>
+        <th>Building</th>
       </tr>
     </thead>
     <tbody>
@@ -26,7 +28,9 @@
         {% for log in log_list %}
         <td> {{ log.timestamp }} </td>
         <td> {{ log.status_changed_timestamp }} </td>
-        <td style="background-color:#DE679F"> {{ log.general_status }} </td>
+        <td>{{guralp.address}}</td>
+        <td>{{guralp.building}}</td>
+
 
         {%endfor%}
       </tr>
