@@ -43,11 +43,6 @@
           <td> {{ log.scream_blocks_5 }} </td>
           <td> {{ log.gcf_last_blocks_5_minutes }} </td>
 
-          <td> {{ log.ntp_status }} </td>
-          <td style="background-color:#FF8672"> {{ log.storage_state }} </td>
-          <td style="background-color:#FF8672"> {{ log.system_load }} </td>
-          <td> {{ log.system_uptime }} </td>
-
           <td> {% if log.ntp_status = "true" %} OK! {% elif log.ntp_status = "false" %} <span style="color:blue"> Error! </span> {%endif%}</td>
           <td> {% if log.storage_state = "Inactive" %} OK! {%else%} {{ log.storage_state }} {%endif%} </td>
           <td> {{ log.storage_free_space }} </td>
