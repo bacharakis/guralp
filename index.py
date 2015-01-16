@@ -145,7 +145,9 @@ for gur in guralps:
               if children.attrib.get("title") == "Total number of blocks out" :
                 log_entry.gcf_blocks_out = children.text
                 status_entry.gcf_blocks_out = children.text
-
+      print log_entry.gcf_blocks_out
+      print log_entry.ntp_status
+      print log_entry.system_build_machine
       guralp.last_update = datetime.now().replace(microsecond=0)
       log_entry.timestamp = datetime.now().replace(microsecond=0)
       status_entry.timestamp = datetime.now().replace(microsecond=0)
