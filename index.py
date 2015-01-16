@@ -19,16 +19,23 @@ for gur in guralps:
   status_entry = status()
 
   print gur.ip
+  print gur.url
   if gur.prefix != "":
     print "Parsing "+gur.prefix
     buffer = StringIO()
     try:
-      c = pycurl.Curl()
-      c.setopt(c.URL, 'http://'+gur.ip.encode("ascii")+'/cgi-bin/xmlstatus.cgi?download_xml=true')
+      if gur.url != "":
+         c = pycurl.Curl()
+         c.setopt(c.URL, 'https://'+gur.ip.encode("ascii")+'/cgi-bin/xmlstatus.cgi?download_xml=true')
+         c.setopt(pycurl.SSL_VERIFYPEER, 0)
+         c.setopt(pycurl.SSL_VERIFYHOST, 0)
+      else:
+         c = pycurl.Curl()
+         c.setopt(c.URL, 'http://'+gur.ip.encode("ascii")+'/cgi-bin/xmlstatus.cgi?download_xml=true')
+
       c.setopt(c.WRITEFUNCTION, buffer.write)
       c.perform()
       c.close()
-
       body = buffer.getvalue()
       # Body is a byte string.
       # We have to know the encoding in order to print it to a text file
