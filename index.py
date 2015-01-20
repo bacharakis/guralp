@@ -171,31 +171,30 @@ for gur in guralps:
 
           print latest_status.gcf_last_samples_5_minutes
           print status_entry.gcf_last_samples_5_minutes
-          try:
 
-              if latest_status.sensor_blocks_out == status_entry.sensor_blocks_out:
-                  print "foo1"
+
+          if latest_status.sensor_blocks_out == status_entry.sensor_blocks_out:
+              print "foo1"
               if latest_status.sensor_blocks_rec == status_entry.sensor_blocks_rec:
                   print "foo2"
-              if latest_status.scream_clients_connected == status_entry.scream_clients_connected:
-                  print "foo3"
-              if latest_status.scream_blocks_5 == status_entry.scream_blocks_5:
-                  print "foo4"
-              if latest_status.gcf_last_blocks_5_minutes == status_entry.gcf_last_blocks_5_minutes:
-                  print "foo5"
-              if latest_status.gcf_last_samples_5_minutes == status_entry.gcf_last_samples_5_minutes:
-                  print "foo6"
-              if latest_status.ntp_status == status_entry.ntp_status:
-                  print "foo7"
-              if latest_status.storage_state == status_entry.storage_state:
-                  print "foo8"
-              if latest_status.storage_size == status_entry.storage_size:
-                  print "foo9"
+                  if latest_status.scream_clients_connected == status_entry.scream_clients_connected:
+                      print "foo3"
+                      if latest_status.scream_blocks_5 == status_entry.scream_blocks_5:
+                          print "foo4"
+                          if latest_status.gcf_last_blocks_5_minutes == status_entry.gcf_last_blocks_5_minutes:
+                              print "foo5"
+                              if latest_status.gcf_last_samples_5_minutes == status_entry.gcf_last_samples_5_minutes:
+                                  print "foo6"
+                                  if latest_status.ntp_status == status_entry.ntp_status:
+                                      print "foo7"
+                                      if latest_status.storage_state == status_entry.storage_state:
+                                          print "foo8"
+                                          if latest_status.storage_size == status_entry.storage_size:
+                                              print "foo9"
+                                              latest_status.delete()
+                                              status_entry.save()
 
-              latest_status.delete()
-              status_entry.save()
-
-          except:
+          else:
               print "not everything same"
               status_entry.save()
       except:
