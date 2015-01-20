@@ -18,7 +18,7 @@ for gur in guralps:
   status_entry = status()
 
   print "=============="
-  print "Being Parsing of:"+gur.prefix+" "+gur.ip
+  print "Beging Parsing of:"+gur.prefix+" "+gur.ip+" "+str(gur.url)
   print "=============="
 
   if gur.prefix != "":
@@ -148,21 +148,16 @@ for gur in guralps:
               if children.attrib.get("title") == "Total number of blocks out" :
                 log_entry.gcf_blocks_out = children.text
                 status_entry.gcf_blocks_out = children.text
-      print log_entry.gcf_blocks_out
-      print log_entry.ntp_status
-      print log_entry.system_build_machine
       guralp.last_update = datetime.now().replace(microsecond=0)
       log_entry.timestamp = datetime.now().replace(microsecond=0)
       status_entry.timestamp = datetime.now().replace(microsecond=0)
       #print guralp.last_update
 
-      print gur.prefix
+
       logging_entry.succeed=gur.prefix+","+str(logging_entry.succeed)
       logging_entry.save()
 
-      print "------------------"
-      print "saving parsing"
-      print "------------------"
+      print "- parsing saved for: "+gur.prefix
 
       try:
           same_entry = log.objects.filter(guralp_prefix=gur.prefix)
@@ -174,10 +169,6 @@ for gur in guralps:
       try:
           same_status = status.objects.filter(guralp_prefix=gur.prefix)
           latest_status = same_status.latest('timestamp')
-          print latest_status.timestamp
-
-          print latest_status.gcf_last_samples_5_minutes
-          print status_entry.gcf_last_samples_5_minutes
 
 
           if latest_status.sensor_blocks_out == status_entry.sensor_blocks_out:
@@ -213,9 +204,8 @@ for gur in guralps:
 
 
     except:
-      print "----Fetching failed ----"
-      print gur.prefix
+      print "----Fetching failed ---- "+gur.prefix
       logging_entry.failed=gur.prefix+","+str(logging_entry.failed)
       logging_entry.save()
 
-print "=============== success ================"
+print "=========== script succeed ============"
