@@ -17,10 +17,11 @@ for gur in guralps:
   log_entry = log()
   status_entry = status()
 
-  print gur.ip
-  print gur.url
+  print "=============="
+  print "Being Parsing of:"+gur.prefix+" "+gur.ip
+  print "=============="
+
   if gur.prefix != "":
-    print "Parsing "+gur.prefix
     buffer = StringIO()
     try:
       if gur.url != "":
@@ -168,7 +169,6 @@ for gur in guralps:
           same_entry.delete()
           log_entry.save()
       except:
-          print "same log wasnt found"
           log_entry.save()
 
       try:
@@ -202,10 +202,8 @@ for gur in guralps:
                                               status_entry.save()
 
           else:
-              print "not everything same"
               status_entry.save()
       except:
-          print "same status log wasn't found"
           status_entry.save()
 
 
@@ -215,7 +213,7 @@ for gur in guralps:
 
 
     except:
-      print "Fetching failed"
+      print "----Fetching failed ----"
       print gur.prefix
       logging_entry.failed=gur.prefix+","+str(logging_entry.failed)
       logging_entry.save()
