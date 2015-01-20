@@ -8,6 +8,7 @@ class guralp(models.Model):
   prefix = models.CharField(max_length=5)
   last_update = models.DateTimeField('date updated')
   ip = models.CharField(max_length=30)
+  url = models.CharField(max_length=50)
   subnet_mask = models.CharField(max_length=30, null=True)
   gateway = models.CharField(max_length=30, null=True)
   internal_ip = models.CharField(max_length=30, null=True)

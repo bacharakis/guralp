@@ -5,12 +5,9 @@ import os
 import sys
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "guralps.settings")
 import django
-#django.setup()
-
-# your imports, e.g. Django models
 from guralp.models import guralp, log, status
 
-guralps = guralp.objects.all()
+guralps = guralp.objects.order_by('prefix')
 guralp = guralp()
 
 
@@ -19,16 +16,23 @@ for gur in guralps:
   status_entry = status()
 
   print gur.ip
+  print gur.url
   if gur.prefix != "":
     print "Parsing "+gur.prefix
     buffer = StringIO()
     try:
-      c = pycurl.Curl()
-      c.setopt(c.URL, 'http://'+gur.ip.encode("ascii")+'/cgi-bin/xmlstatus.cgi?download_xml=true')
+      if gur.url != "":
+         c = pycurl.Curl()
+         c.setopt(c.URL, 'https://'+gur.ip.encode("ascii")+'/cgi-bin/xmlstatus.cgi?download_xml=true')
+         c.setopt(pycurl.SSL_VERIFYPEER, 0)
+         c.setopt(pycurl.SSL_VERIFYHOST, 0)
+      else:
+         c = pycurl.Curl()
+         c.setopt(c.URL, 'http://'+gur.ip.encode("ascii")+'/cgi-bin/xmlstatus.cgi?download_xml=true')
+
       c.setopt(c.WRITEFUNCTION, buffer.write)
       c.perform()
       c.close()
-
       body = buffer.getvalue()
       # Body is a byte string.
       # We have to know the encoding in order to print it to a text file
@@ -141,7 +145,9 @@ for gur in guralps:
               if children.attrib.get("title") == "Total number of blocks out" :
                 log_entry.gcf_blocks_out = children.text
                 status_entry.gcf_blocks_out = children.text
-
+      print log_entry.gcf_blocks_out
+      print log_entry.ntp_status
+      print log_entry.system_build_machine
       guralp.last_update = datetime.now().replace(microsecond=0)
       log_entry.timestamp = datetime.now().replace(microsecond=0)
       status_entry.timestamp = datetime.now().replace(microsecond=0)
