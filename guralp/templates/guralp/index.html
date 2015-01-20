@@ -13,6 +13,7 @@
   <dl class="tabs" data-tab>
     <dd class="active"><a href="#panel1">Status</a></dd>
     <dd><a href="#panel2">Static info</a></dd>
+    <dd><a href="#panel3">Log</a></dd>
   </dl>
   <div class="tabs-content">
     <div class="content active" id="panel1">
@@ -112,6 +113,28 @@
   </table>
 
 </div>
+
+<div class="content" id="panel3">
+  <table class="sortable">
+    <thead>
+
+      <tr>
+        <th>Timestamp</th>
+        <th>Succeed</th>
+        <th>Failed</th>
+      </tr>
+    </thead>
+    <tbody>{% for logging in logging_list %}
+      <tr>
+        <td>{{ logging.timestamp }}</td>
+        <td>{{ logging.succeed }}</td>
+        <td>{{ logging.failed }}</td>
+          {% endfor %}
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
 
 </div>
 </div>

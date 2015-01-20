@@ -5,11 +5,13 @@ import os
 import sys
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "guralps.settings")
 import django
-from guralp.models import guralp, log, status
+from guralp.models import guralp, log, status, logging
 
 guralps = guralp.objects.order_by('prefix')
 guralp = guralp()
 
+logging_entry = logging()
+logging_entry.timestamp = datetime.now().replace(microsecond=0)
 
 for gur in guralps:
   log_entry = log()
@@ -152,6 +154,11 @@ for gur in guralps:
       log_entry.timestamp = datetime.now().replace(microsecond=0)
       status_entry.timestamp = datetime.now().replace(microsecond=0)
       #print guralp.last_update
+
+      print gur.prefix
+      logging_entry.succeed=gur.prefix+","+str(logging_entry.succeed)
+      logging_entry.save()
+
       print "------------------"
       print "saving parsing"
       print "------------------"
@@ -209,5 +216,8 @@ for gur in guralps:
 
     except:
       print "Fetching failed"
+      print gur.prefix
+      logging_entry.failed=gur.prefix+","+str(logging_entry.failed)
+      logging_entry.save()
 
 print "=============== success ================"

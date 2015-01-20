@@ -85,3 +85,11 @@ class log(models.Model):
   root_free_filesystem = models.CharField(max_length=50,null=True)
   system_load = models.CharField(max_length=50,null=True)
   system_uptime = models.CharField(max_length=50,null=True)
+
+class logging(models.Model):
+  def __str__(self):
+      return self.timestamp
+
+  timestamp = models.CharField(max_length=50 ,null=True)
+  failed = models.CharField(max_length=1000 ,null=True)
+  succeed = models.CharField(max_length=1000 ,null=True)
