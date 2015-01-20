@@ -196,8 +196,8 @@
       </tr>
     </thead>
     <tbody>
+      {% for status_entry in status_list %}
       <tr>
-        {% for status_entry in status_list %}
         <td> {{ status_entry.timestamp}} </td>
         <td> {{ status_entry.sensor_blocks_out}} </td>
         <td> {{ status_entry.sensor_blocks_rec}}
@@ -208,8 +208,8 @@
           <td> {{ status_entry.ntp_status }} </td>
           <td> {{ status_entry.storage_state }} </td>
           <td> {{ status_entry.storage_size }} </td>
-          {% endfor %}
         </tr>
+        {% endfor %}
       </tbody>
     </table>
 </div>
