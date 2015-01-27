@@ -3,30 +3,33 @@ from django.db import models
 # Create your models here.
 
 class guralp(models.Model):
-  def __str__(self):              # __unicode__ on Python 2
-        return self.prefix
-  prefix = models.CharField(max_length=5)
-  seira_episkepsis = models.CharField(max_length=30, null=True)
-
-  last_update = models.DateTimeField('date updated')
-  ip = models.CharField(max_length=30)
-  url = models.CharField(max_length=50)
-  subnet_mask = models.CharField(max_length=30, null=True)
-  gateway = models.CharField(max_length=30, null=True)
-  internal_ip = models.CharField(max_length=30, null=True)
-  syvzexis_ip = models.CharField(max_length=30, null=True)
-  syvzexis = models.CharField(max_length=10, null=True)
-  technician = models.CharField(max_length=60, null=True)
-  technician_crew = models.CharField(max_length=80, null=True)
-  technicians_phone = models.CharField(max_length=30, null=True)
-  region = models.CharField(max_length=70, null=True)
-  building = models.CharField(max_length=70, null=True)
-  address = models.CharField(max_length=120, null=True)
-  installed = models.CharField(max_length=30, null=True)
-  status = models.CharField(max_length=30, null=True)
-  status_details = models.CharField(max_length=30, null=True)
-  firmware_update_status  = models.CharField(max_length=30, null=True)
-  cords  = models.CharField(max_length=30, null=True)
+    def __str__(self):              # __unicode__ on Python 2
+          return self.station_code
+    installation_order = models.CharField(max_length=5)
+    station_code = models.CharField(max_length=30, null=True)
+    location = models.CharField(max_length=80, null=True)
+    region = models.CharField(max_length=80, null=True)
+    building = models.CharField(max_length=80, null=True)
+    status = models.CharField(max_length=30, null=True)
+    status_details = models.CharField(max_length=30, null=True)
+    last_manual_check = models.CharField(max_length=30, null=True)
+    firmware_upgrade_status = models.CharField(max_length=30, null=True)
+    eam_firmware = models.CharField(max_length=30, null=True)
+    digitizer_firmware = models.CharField(max_length=30, null=True)
+    coordinates = models.CharField(max_length=30, null=True)
+    installation_date = models.CharField(max_length=30, null=True)
+    internal_ip	= models.CharField(max_length=30, null=True)
+    subnet_mask	= models.CharField(max_length=30, null=True)
+    gateway	= models.CharField(max_length=30, null=True)
+    syzefxis_ip = models.CharField(max_length=30, null=True)
+    external_ip = models.CharField(max_length=30, null=True)
+    network_provider = models.CharField(max_length=30, null=True)
+    url	 = models.CharField(max_length=30, null=True)
+    installation_crew = models.CharField(max_length=30, null=True)
+    comments = models.CharField(max_length=30, null=True)
+    eam_serial	= models.CharField(max_length=30, null=True)
+    digitizer_serial = models.CharField(max_length=30, null=True)
+    trigger_setting = models.CharField(max_length=30, null=True)
 
 
 class status(models.Model):
