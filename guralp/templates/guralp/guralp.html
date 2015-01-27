@@ -7,29 +7,31 @@
   <table>
     <thead>
       <tr>
-        <th>Prefix</th>
+        <th>Station Code</th>
         <th>IP</th>
         <th>last update</th>
         <th>last status changed</th>
-        <th>Address</th>
-        <th>Building</th>
+        <th>Eam serial</th>
+        <th>Digitizer serial</th>
+        <th>Trigger setting</th>
       </tr>
     </thead>
     <tbody>
       {% for guralp in guralp_details %}
 
       <tr>
-        <td><a href=/guralp/{{ guralp.prefix }}>{{ guralp.prefix }} </a>
+        <td><a href=/guralp/{{ guralp.station_code }}>{{ guralp.station_code }} </a>
         </td>
         <td>
-          {{guralp.ip}}
+          {{guralp.external_ip}}
         </td>
 
-        {% for log in log_list %}
+        {% for log in single_log_list %}
         <td> {{ log.timestamp }} </td>
         <td> {{ log.status_changed_timestamp }} </td>
-        <td>{{guralp.address}}</td>
-        <td>{{guralp.building}}</td>
+        <td>{{ guralp.eam_serial}}</td>
+        <td>{{ guralp.digitizer_serial }}</td>
+        <td>{{ guralp.trigger_setting }}
 
 
         {%endfor%}
@@ -39,6 +41,39 @@
   <a href="{% url 'admin:index' %}guralp/guralp/{{guralp.id}}" class="button tiny">Edit station</a>
   {% endfor %}
 </div>
+<div class="row">
+  <h3>Static Information</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Installation Order</th>
+        <th>location</th>
+        <th>Region</th>
+        <th>Building</th>
+        <th>Coordinates</th>
+        <th>Installation date</th>
+        <th>Installation crew</th>
+        <th>Comments</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for guralp in guralp_details %}
+        <td> {{ guralp.installation_order}} </td>
+        <td> {{ guralp.location }} </td>
+        <td> {{ guralp.region }} </td>
+        <td> {{ guralp.building }} </td>
+        <td> {{ guralp.coordinates }} </td>
+        <td> {{ guralp.installation_date}} </td>
+        <td> {{ guralp.installation_crew }} </td>
+        <td> {{ guralp.comments }} </td>
+
+        {%endfor%}
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 <div class="row">
   <h3>Sensor</h3>
   <table>
@@ -52,7 +87,7 @@
     </thead>
     <tbody>
       <tr>
-        {% for log in log_list %}
+        {% for log in single_log_list %}
         <td> {{ log.sensor_blocks_out}} </td>
         <td> {{ log.sensor_blocks_rec }} </td>
         <td> {{ log.sensor_last_event }} </td>
@@ -76,7 +111,7 @@
     </thead>
     <tbody>
       <tr>
-        {% for log in log_list %}
+        {% for log in single_log_list %}
         <td> {{ log.gcf_blocks_out}} </td>
         <td> {{ log.gcf_last_blocks_5_minutes }} </td>
         <td> {{ log.gcf_last_samples_5_minutes }} </td>
@@ -97,7 +132,7 @@
     </thead>
     <tbody>
       <tr>
-        {% for log in log_list %}
+        {% for log in single_log_list %}
         <td> {{ log.scream_clients_connected}} </td>
         <td> {{ log.sensor_blocks_5 }} </td>
         {%endfor%}
@@ -117,7 +152,7 @@
     </thead>
     <tbody>
     <tr>
-        {% for log in log_list %}
+        {% for log in single_log_list %}
         <td> {{ log.ntp_status}} </td>
         <td> {{ log.ntp_estimated_error }} </td>
         {%endfor%}
@@ -140,7 +175,7 @@
     <tbody>
 
       <tr>
-        {% for log in log_list %}
+        {% for log in single_log_list %}
         <td> {{ log.storage_state}} </td>
         <td> {{ log.storage_size }}
         <td> {{ log.storage_last_accessed }} </td>
@@ -166,7 +201,7 @@
     </thead>
     <tbody>
       <tr>
-        {% for log in log_list %}
+        {% for log in single_log_list %}
         <td> {{ log.system_uptime}} </td>
         <td> {{ log.system_load }}
           <td> {{ log.root_free_filesystem }} </td>
@@ -196,18 +231,18 @@
       </tr>
     </thead>
     <tbody>
-      {% for status_entry in status_list %}
+      {% for history_entry in history_list %}
       <tr>
-        <td> {{ status_entry.timestamp}} </td>
-        <td> {{ status_entry.sensor_blocks_out}} </td>
-        <td> {{ status_entry.sensor_blocks_rec}}
-          <td> {{ status_entry.scream_clients_connected }} </td>
-          <td> {{ status_entry.scream_blocks_5}} </td>
-          <td> {{ status_entry.gcf_last_blocks_5_minutes }} </td>
-          <td> {{ status_entry.gcf_last_samples_5_minutes }} </td>
-          <td> {{ status_entry.ntp_status }} </td>
-          <td> {{ status_entry.storage_state }} </td>
-          <td> {{ status_entry.storage_size }} </td>
+        <td> {{ history_entry.timestamp}} </td>
+        <td> {{ history_entry.sensor_blocks_out}} </td>
+        <td> {{ history_entry.sensor_blocks_rec}}
+          <td> {{ history_entry.scream_clients_connected }} </td>
+          <td> {{ history_entry.scream_blocks_5}} </td>
+          <td> {{ history_entry.gcf_last_blocks_5_minutes }} </td>
+          <td> {{ history_entry.gcf_last_samples_5_minutes }} </td>
+          <td> {{ history_entry.ntp_status }} </td>
+          <td> {{ history_entry.storage_state }} </td>
+          <td> {{ history_entry.storage_size }} </td>
         </tr>
         {% endfor %}
       </tbody>

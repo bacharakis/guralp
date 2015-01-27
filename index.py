@@ -7,8 +7,8 @@ import os
 import sys
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "guralps.settings")
 import django
-django.setup()
-from guralp.models import guralp, log, history, logging
+#django.setup()
+from guralp.models import guralp, single_log, history, logging
 
 
 #guralps_out = guralp.objects.filter(status="Unreachable").order_by('prefix')
@@ -25,11 +25,11 @@ logging_entry = logging()
 logging_entry.timestamp = datetime.now().replace(microsecond=0)
 
 for gur in guralps:
-  log_entry = log()
+  log_entry = single_log()
   history_entry = history()
 
   print "=============="
-  print "Beginning Parsing of:"+gur.station_code+" "+gur.ip+" "+str(gur.url)
+  print "Beginning Parsing of:"+gur.station_code+" "+gur.external_ip+" "+str(gur.url)
   print "=============="
 
   if gur.station_code != "":
@@ -37,11 +37,11 @@ for gur in guralps:
       print "Forming URL..."
       c = pycurl.Curl()
       if gur.url == "https":
-         c.setopt(pycurl.URL, 'https://'+gur.ip.encode("ascii")+'/cgi-bin/xmlstatus.cgi?download_xml=true')
+         c.setopt(pycurl.URL, 'https://'+gur.external_ip.encode("ascii")+'/cgi-bin/xmlstatus.cgi?download_xml=true')
          c.setopt(pycurl.SSL_VERIFYPEER, 0)
          c.setopt(pycurl.SSL_VERIFYHOST, 0)
       else:
-         c.setopt(pycurl.URL, 'http://'+gur.ip.encode("ascii")+'/cgi-bin/xmlstatus.cgi?download_xml=true')
+         c.setopt(pycurl.URL, 'http://'+gur.external_ip.encode("ascii")+'/cgi-bin/xmlstatus.cgi?download_xml=true')
 
       print c.getinfo(pycurl.EFFECTIVE_URL)
 
@@ -60,7 +60,7 @@ for gur in guralps:
       root = ET.fromstring(body)
 
       log_entry.station_code = gur.station_code
-      history_entry.staton_code = gur.station_code
+      history_entry.station_code = gur.station_code
 
 
       print "parsing sensor"
@@ -163,7 +163,7 @@ for gur in guralps:
               if children.attrib.get("title") == "Total number of blocks out" :
                 log_entry.gcf_blocks_out = children.text
                 history_entry.gcf_blocks_out = children.text
-      guralp.last_update = datetime.now().replace(microsecond=0)
+      #guralp.last_update = datetime.now().replace(microsecond=0)
       log_entry.timestamp = datetime.now().replace(microsecond=0)
       history_entry.timestamp = datetime.now().replace(microsecond=0)
       #print guralp.last_update
@@ -175,7 +175,7 @@ for gur in guralps:
       print "- parsing saved for: "+gur.station_code
 
       try:
-          same_entry = log.objects.filter(station_code=gur.station_code)
+          same_entry = single_log.objects.filter(station_code=gur.station_code)
           same_entry.delete()
           log_entry.save()
       except:
@@ -183,7 +183,6 @@ for gur in guralps:
 
       try:
           same_status = history.objects.filter(station_code=gur.station_code)
-          latest_status = same_status.latest('timestamp')
 
 
           if latest_status.sensor_blocks_out == status_entry.sensor_blocks_out:
@@ -208,9 +207,9 @@ for gur in guralps:
                                               status_entry.save()
 
           else:
-              status_entry.save()
+              history_entry.save()
       except:
-          status_entry.save()
+          history_entry.save()
 
 
 

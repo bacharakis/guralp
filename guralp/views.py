@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from guralp.models import guralp, log, status,logging
+from guralp.models import guralp, single_log, history,logging
 import pycurl
 from io import BytesIO
 
@@ -8,17 +8,17 @@ from io import BytesIO
 def index(request):
 
     latest_guralp_list = guralp.objects.exclude(status="Unreachable").order_by('station_code')
-    log_list = log.objects.all()
-    logging_list = logging.objects.all()
+    single_log_list = single_log.objects.all()
+    history_list = history.objects.all()
 
-    context = {'latest_guralp_list': latest_guralp_list ,'log_list' : log_list , 'logging_list' : logging_list }
+    context = {'latest_guralp_list': latest_guralp_list ,'single_log_list' : single_log_list , 'history_list' : history_list }
 
     return render(request, 'guralp/index.html', context)
 
 def detail(request, guralpre):
-    log_list = log.objects.filter(station_code=guralpre)
-    status_list = status.objects.filter(station_code=guralpre)
+    single_log_list = single_log.objects.filter(station_code=guralpre)
+    history_list = history.objects.filter(station_code=guralpre)
     guralp_details = guralp.objects.filter(station_code=guralpre)
-    context = {'guralp_details' : guralp_details , 'log_list' : log_list , 'status_list' : status_list }
+    context = {'guralp_details' : guralp_details , 'single_log_list' : single_log_list , 'history_list' : history_list }
 
     return render(request, 'guralp/guralp.html', context)

@@ -43,9 +43,8 @@
 
           <td><a href=/guralp/{{ guralp.station_code }}>{{ guralp.station_code }} </a></td>
 
-          {% for log in log_list %}{% if guralp.station_code = log.station_code %}
+          {% for log in single_log_list %}{% if guralp.station_code = log.station_code %}
           <td> {{ guralp.status }} </td>
-
           <td> {{ log.timestamp }} </td>
           <td> {{ log.status_changed_timestamp }} </td>
           <td> {{ log.sensor_last_packet_received }} </td>
@@ -98,13 +97,13 @@
         <td>{{guralp.internal_ip}}</td>
         <td>{{guralp.region}}</td>
         <td>{{guralp.building}}</td>
-        <td>{{guralp.address}}</td>
-        {% for log in log_list %}{% if guralp.station_code = log.station_code %}
+        <td>{{guralp.location}}</td>
+        {% for log in single_log_list %}{% if guralp.station_code = log.station_code %}
         <td>{{log.system_build_machine}}</td>
         <td>{{log.system_build_number}}</td>
         {%endif%}
         {%endfor%}
-        <td> <a href="{% url 'admin:index' %}guralp/guralp/{{guralp.id}}">Edit</a><td>
+        <td> <a href="{% url 'admin.index' %}guralp/guralp/{{guralp.id}}">Edit</a><td>
 
         {% endfor %}
 
