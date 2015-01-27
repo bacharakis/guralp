@@ -5,9 +5,10 @@ import os
 import sys
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "guralps.settings")
 import django
-from guralp.models import guralp, log, status, logging
+django.setup()
+from guralp.models import guralp, log, history, logging
 
-guralps = guralp.objects.order_by('prefix')
+guralps = guralp.objects.order_by('station_code')
 guralp = guralp()
 
 logging_entry = logging()
@@ -15,13 +16,13 @@ logging_entry.timestamp = datetime.now().replace(microsecond=0)
 
 for gur in guralps:
   log_entry = log()
-  status_entry = status()
+  history_entry = history()
 
   print "=============="
-  print "Beging Parsing of:"+gur.prefix+" "+gur.ip+" "+str(gur.url)
+  print "Beging Parsing of:"+gur.station_code+" "+gur.ip+" "+str(gur.url)
   print "=============="
 
-  if gur.prefix != "":
+  if gur.station_code != "":
     buffer = StringIO()
     try:
       if gur.url != "":
@@ -43,8 +44,8 @@ for gur in guralps:
       import xml.etree.ElementTree as ET
       root = ET.fromstring(body)
 
-      log_entry.guralp_prefix = gur.prefix
-      status_entry.guralp_prefix = gur.prefix
+      log_entry.station_code = gur.station_code
+      history_entry.staton_code = gur.station_code
 
 
 
@@ -55,16 +56,16 @@ for gur in guralps:
           for children in child:
             if children.attrib.get("title") == "Timestamp of last packet received" :
               log_entry.sensor_last_packet_received = children.text
-              status_entry.sensor_last_packet_received = children.text
+              history_entry.sensor_last_packet_received = children.text
             if children.attrib.get("title") == "Time of last event" :
               log_entry.sensor_last_event = children.text
-              status_entry.sensor_last_event = children.text
+              history_entry.sensor_last_event = children.text
             if children.attrib.get("title") == "Number of blocks received in last 5 minutes" :
               log_entry.sensor_blocks_rec = children.text
-              status_entry.sensor_blocks_rec = children.text
+              history_entry.sensor_blocks_rec = children.text
             if children.attrib.get("title") == "Number of blocks output in last 5 minutes" :
               log_entry.sensor_blocks_out = children.text
-              status_entry.sensor_blocks_out = children.text
+              history_entry.sensor_blocks_out = children.text
 
       print "parsing GPS"
       #get GPS status
@@ -73,10 +74,10 @@ for gur in guralps:
           for children in child:
             if children.attrib.get("title") == "Clock locked" :
               log_entry.ntp_status = children.text
-              status_entry.ntp_status = children.text
+              history_entry.ntp_status = children.text
             if children.attrib.get("title") == "Estimated error" :
               log_entry.ntp_estimated_error = children.text
-              status_entry.ntp_estimated_error = children.text
+              history_entry.ntp_estimated_error = children.text
 
       print "parsing scream"
       #scream
@@ -85,10 +86,10 @@ for gur in guralps:
           for children in child:
             if children.attrib.get("title") == "Number of clients connected" :
               log_entry.scream_clients_connected = children.text
-              status_entry.scream_clients_connected = children.text
+              history_entry.scream_clients_connected = children.text
             if children.attrib.get("title") == "Number of blocks sent in last 5 minutes" :
               log_entry.scream_blocks_5 = children.text
-              status_entry.scream_blocks_5 = children.text
+              history_entry.scream_blocks_5 = children.text
 
       print "parsing storage"
       #get storage status
@@ -97,16 +98,16 @@ for gur in guralps:
           for children in child:
             if children.attrib.get("title") == "State" :
               log_entry.storage_state = children.text
-              status_entry.storage_state = children.text
+              history_entry.storage_state = children.text
             if children.attrib.get("title") == "Last accessed" :
               log_entry.storage_last_accessed = children.text
-              status_entry.storage_last_accessed = children.text
+              history_entry.storage_last_accessed = children.text
             if children.attrib.get("title") == "Free space" :
               log_entry.storage_free_space = children.text
-              status_entry.storage_free_space = children.text
+              history_entry.storage_free_space = children.text
             if children.attrib.get("title") == "Storage size" :
               log_entry.storage_size = children.text
-              status_entry.storage_size = children.text
+              history_entry.storage_size = children.text
 
       print "parsing system"
       #get storage status
@@ -117,22 +118,22 @@ for gur in guralps:
               uptime = (float(children.text) / 3600 )/ 24
               uptime = "%.2f" % uptime
               log_entry.system_uptime = uptime
-              status_entry.system_uptime = uptime
+              history_entry.system_uptime = uptime
             if children.attrib.get("title") == "Load Average" :
               log_entry.system_load = children.text
-              status_entry.system_load = children.text
+              history_entry.system_load = children.text
             if children.attrib.get("title") == "Root filesystem percentage space free" :
               log_entry.root_free_filesystem = children.text
-              status_entry.root_free_filesystem = children.text
+              history_entry.root_free_filesystem = children.text
             if children.attrib.get("title") == "Software repository label" :
               log_entry.system_repo = children.text
-              status_entry.system_repo = children.text
+              history_entry.system_repo = children.text
             if children.attrib.get("title") == "Software build number" :
               log_entry.system_build_number = children.text
-              status_entry.system_build_number = children.text
+              history_entry.system_build_number = children.text
             if children.attrib.get("title") == "Build machine" :
               log_entry.system_build_machine = children.text
-              status_entry.system_build_machine = children.text
+              history_entry.system_build_machine = children.text
 
       print "parsing gcf"
       #get gcf
@@ -141,33 +142,33 @@ for gur in guralps:
           for children in child:
               if children.attrib.get("title") == "Number of samples in in last 5 minutes" :
                 log_entry.gcf_last_samples_5_minutes = children.text
-                status_entry.gcf_last_samples_5_minutes = children.text
+                history_entry.gcf_last_samples_5_minutes = children.text
               if children.attrib.get("title") == "Number of blocks out in last 5 minutes" :
                 log_entry.gcf_last_blocks_5_minutes = children.text
-                status_entry.gcf_last_blocks_5_minutes = children.text
+                history_entry.gcf_last_blocks_5_minutes = children.text
               if children.attrib.get("title") == "Total number of blocks out" :
                 log_entry.gcf_blocks_out = children.text
-                status_entry.gcf_blocks_out = children.text
+                history_entry.gcf_blocks_out = children.text
       guralp.last_update = datetime.now().replace(microsecond=0)
       log_entry.timestamp = datetime.now().replace(microsecond=0)
-      status_entry.timestamp = datetime.now().replace(microsecond=0)
+      history_entry.timestamp = datetime.now().replace(microsecond=0)
       #print guralp.last_update
 
 
-      logging_entry.succeed=gur.prefix+","+str(logging_entry.succeed)
+      logging_entry.succeed=gur.station_code+","+str(logging_entry.succeed)
       logging_entry.save()
 
-      print "- parsing saved for: "+gur.prefix
+      print "- parsing saved for: "+gur.station_code
 
       try:
-          same_entry = log.objects.filter(guralp_prefix=gur.prefix)
+          same_entry = log.objects.filter(station_code=gur.station_code)
           same_entry.delete()
           log_entry.save()
       except:
           log_entry.save()
 
       try:
-          same_status = status.objects.filter(guralp_prefix=gur.prefix)
+          same_status = history.objects.filter(station_code=gur.station_code)
           latest_status = same_status.latest('timestamp')
 
 
@@ -204,8 +205,8 @@ for gur in guralps:
 
 
     except:
-      print "----Fetching failed ---- "+gur.prefix
-      logging_entry.failed=gur.prefix+","+str(logging_entry.failed)
+      print "----Fetching failed ---- "+gur.station_code
+      logging_entry.failed=gur.station_code+","+str(logging_entry.failed)
       logging_entry.save()
 
 print "=========== script succeed ============"

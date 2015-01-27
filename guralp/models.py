@@ -32,10 +32,10 @@ class guralp(models.Model):
     trigger_setting = models.CharField(max_length=30, null=True)
 
 
-class status(models.Model):
+class history(models.Model):
   def __str__(self):              # __unicode__ on Python 2
-        return self.guralp_prefix
-  guralp_prefix = models.CharField(max_length=50 ,null=True)
+        return self.station_code
+  station_code = models.CharField(max_length=50 ,null=True)
   timestamp = models.CharField(max_length=50 ,null=True)
   status_changed_timestamp = models.CharField(max_length=50 ,null=True)
   general_status = models.CharField(max_length=50 ,null=True)
@@ -66,10 +66,10 @@ class status(models.Model):
   system_load = models.CharField(max_length=50,null=True)
   system_uptime = models.CharField(max_length=50,null=True)
 
-class log(models.Model):
+class single_log(models.Model):
   def __str__(self):              # __unicode__ on Python 2
-        return self.guralp_prefix
-  guralp_prefix = models.CharField(max_length=50 ,null=True)
+        return self.station_code
+  station_code = models.CharField(max_length=50 ,null=True)
   timestamp = models.CharField(max_length=50 ,null=True)
   status_changed_timestamp = models.CharField(max_length=50 ,null=True)
   general_status = models.CharField(max_length=50 ,null=True)
