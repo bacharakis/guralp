@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import pycurl
 from datetime import datetime
 from StringIO import StringIO
@@ -8,7 +10,15 @@ import django
 django.setup()
 from guralp.models import guralp, log, history, logging
 
-guralps = guralp.objects.order_by('station_code')
+
+#guralps_out = guralp.objects.filter(status="Unreachable").order_by('prefix')
+#for gur in guralps_out:
+#	print gur.prefix+" "+gur.ip+" "+str(gur.url)
+#
+#sys.exit(0)
+
+guralps = guralp.objects.exclude(status="Unreachable").order_by('station_code')
+
 guralp = guralp()
 
 logging_entry = logging()
@@ -19,24 +29,29 @@ for gur in guralps:
   history_entry = history()
 
   print "=============="
-  print "Beging Parsing of:"+gur.station_code+" "+gur.ip+" "+str(gur.url)
+  print "Beginning Parsing of:"+gur.station_code+" "+gur.ip+" "+str(gur.url)
   print "=============="
 
   if gur.station_code != "":
-    buffer = StringIO()
     try:
-      if gur.url != "":
-         c = pycurl.Curl()
-         c.setopt(c.URL, 'https://'+gur.ip.encode("ascii")+'/cgi-bin/xmlstatus.cgi?download_xml=true')
+      print "Forming URL..."
+      c = pycurl.Curl()
+      if gur.url == "https":
+         c.setopt(pycurl.URL, 'https://'+gur.ip.encode("ascii")+'/cgi-bin/xmlstatus.cgi?download_xml=true')
          c.setopt(pycurl.SSL_VERIFYPEER, 0)
          c.setopt(pycurl.SSL_VERIFYHOST, 0)
       else:
-         c = pycurl.Curl()
-         c.setopt(c.URL, 'http://'+gur.ip.encode("ascii")+'/cgi-bin/xmlstatus.cgi?download_xml=true')
+         c.setopt(pycurl.URL, 'http://'+gur.ip.encode("ascii")+'/cgi-bin/xmlstatus.cgi?download_xml=true')
 
-      c.setopt(c.WRITEFUNCTION, buffer.write)
+      print c.getinfo(pycurl.EFFECTIVE_URL)
+
+      print "Getting XML..."
+      buffer = StringIO()
+      c.setopt(pycurl.WRITEFUNCTION, buffer.write)
       c.perform()
       c.close()
+
+      print "Reading XML..."
       body = buffer.getvalue()
       # Body is a byte string.
       # We have to know the encoding in order to print it to a text file
@@ -46,7 +61,6 @@ for gur in guralps:
 
       log_entry.station_code = gur.station_code
       history_entry.staton_code = gur.station_code
-
 
 
       print "parsing sensor"
@@ -202,11 +216,10 @@ for gur in guralps:
 
 
 
+      print "=========== script succeed ============"
 
 
     except:
       print "----Fetching failed ---- "+gur.station_code
       logging_entry.failed=gur.station_code+","+str(logging_entry.failed)
       logging_entry.save()
-
-print "=========== script succeed ============"
