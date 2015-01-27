@@ -7,7 +7,7 @@ from io import BytesIO
 # Create your views here.
 def index(request):
 
-    latest_guralp_list = guralp.objects.order_by('prefix')
+    latest_guralp_list = guralp.objects.exclude(status="Unreachable").order_by('prefix')
     log_list = log.objects.all()
     logging_list = logging.objects.all()
 
