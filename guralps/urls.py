@@ -11,4 +11,5 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^guralp/', include('guralp.urls')),
+    url(r'^earthquakes/', include('earthquakes.urls'))
 )
