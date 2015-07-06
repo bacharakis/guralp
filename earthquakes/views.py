@@ -19,6 +19,16 @@ def api_calls(request):
         return JsonResponse(data, safe=False)
 
     return render(request, 'earthquakes/index.html')
+
+
+def search(req):
+    if req.GET:
+        search_term = req.GET['term']
+        results = stations.objects.filter(id=search_term)
+        results="SKG"
+        return render( {'results': results},'index.html')
+    return render('index.html', {})
+
 def index(request):
 
     stations_list = stations.objects.all().order_by('station_code')
