@@ -11,7 +11,6 @@ def api_calls(request):
         #Always use get on request.POST. Correct way of querying a QueryDict.
         name = request.GET.get('name')
         code = request.GET.get('code')
-        stations_list = stations.objects.filter(station_code=code)
 
         #need to serialize the model before sending the result of the request
         data = serializers.serialize('json', stations.objects.filter(station_code=code))
