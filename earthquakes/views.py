@@ -19,3 +19,9 @@ def api_calls(request):
         return JsonResponse(data, safe=False)
 
     return render(request, 'earthquakes/index.html')
+def index(request):
+
+    stations_list = stations.objects.all().order_by('station_code')
+
+
+    return render(request, 'earthquakes/index.html', { 'stations_list' : stations_list } )
