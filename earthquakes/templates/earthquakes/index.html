@@ -53,6 +53,9 @@
       }, function(ret) {
         var json = $.parseJSON(ret);
         console.log(json["0"].fields.lamda);
+
+        $("#results").find("tr:gt(0)").remove();
+
         $('#stationCode').val("");
         for (var i = 0; i < json.length; i++) {
           tr = $('<tr/>');
