@@ -3,7 +3,7 @@ from django.shortcuts import render
 from earthquakes.models import stations
 from django.core import serializers
 
-def api_calls(request):
+def stations_api(request):
 
     if request.method == 'GET':
         #POST goes here . is_ajax is must to capture ajax requests. Beginner's pit.
