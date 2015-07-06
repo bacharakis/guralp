@@ -1,140 +1,239 @@
-{% extends "foundation/base.html" %} {% block base_body %}
-{% load static %}
-
+{% extends "foundation/base.html" %} {% block base_body %} {% load static %} {% load easy_maps_tags %}
 <script src="{% static 'sorttable.js' %}" type="text/javascript"></script>
 
-<div class="row">
-  <h3>  Welcome to Guralp Monitor tool</h3>
-</div>
-<p>
+<html>
+
+<head>
+  <title>Your title
+
+    <style>
+      html,
+      body,
+      #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+    <script>
+      function initialize() {
+        var myLatlng = new google.maps.LatLng(-25.363882, 131.044922);
+        var mapOptions = {
+          zoom: 4,
+          center: myLatlng
+        }
+        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+        var marker = new google.maps.Marker({
+          position: myLatlng,
+          map: map,
+          title: 'Hello World!'
+        });
+      }
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
 
 
-<div class="row">
-  <dl class="tabs" data-tab>
-    <dd class="active"><a href="#panel1">Status</a></dd>
-    <dd><a href="#panel2">Static info</a></dd>
-    <dd><a href="#panel3">Log</a></dd>
-  </dl>
-  <div class="tabs-content">
-    <div class="content active" id="panel1">
-      <div class="row">
-    <table class="sortable">
+
+
+
+  </title>
+  <script type="text/javascript" src="/media/js/jquery-1.10.2.min.js"></script>
+  <script type="text/javascript">
+    function searchStation() {
+      $.get('/earthquakes/guralp', {
+        "name": $('#stationName').val(),
+        "code": $('#stationCode').val(),
+        "fi": $('#stationFi').val(),
+        "lamda": $('#stationLamda').val(),
+        "height": $('#stationHeight').val()
+
+      }, function(ret) {
+        var json = $.parseJSON(ret);
+        console.log(json["0"].fields.lamda);
+        $('#stationCode').val("");
+        for (var i = 0; i < json.length; i++) {
+          tr = $('<tr/>');
+          tr.append("<td>" + json[i].fields.station_name + "</td>");
+          tr.append("<td>" + json[i].fields.station_code + "</td>");
+          tr.append("<td>" + json[i].fields.fi + "</td>");
+          tr.append("<td>" + json[i].fields.lamda + "</td>");
+          tr.append("<td>" + json[i].fields.height + "</td>");
+          $('#results').append(tr);
+
+          var myLatlng = new google.maps.LatLng(json[i].fields.fi,json[i].fields.lamda);
+          var mapOptions = {
+            zoom: 9,
+            center: myLatlng
+          }
+          var map = new google.maps.Map(document.getElementById("map-canvas-2"), mapOptions);
+
+          var marker = new google.maps.Marker({
+            position: myLatlng,
+            title: "Hello World!"
+          });
+        }
+
+        // To add the marker to the map, call setMap();
+        marker.setMap(map);
+
+        return ret; //you can handle with return value ret here
+      });
+    }
+  </script>
+</head>
+
+<body>
+
+  <div class="row">
+    <h3>Welcome to earthquakes database by itsak.gr</h3>
+  </div>
+  </br>
+
+  <div class="row">
+    <div class="large-4 columns">
+      <dl class="tabs" data-tab>
+        <dd class="active"><a href="#panel1">Stations</a></dd>
+        <dd><a href="#panel2">Events</a></dd>
+      </dl>
+      <div class="tabs-content">
+        <div class="content active" id="panel1">
+
+          <table>
+            <tbody>
+              <tr>
+                <td>Station Name</td>
+                <td>
+                  <input type="text" id="stationName">
+                </td>
+              </tr>
+
+              <tr>
+                <td>Station code</td>
+                <td>
+                  <input type="text" id="stationCode">
+                </td>
+              </tr>
+
+              <tr>
+                <td>Station fi</td>
+                <td>
+                  <input type="text" id="stationFi">
+                </td>
+              </tr>
+
+              <tr>
+                <td>Station lamda</td>
+                <td>
+                  <input type="text" id="stationLamda">
+                </td>
+              </tr>
+
+              <tr>
+                <td>Station height</td>
+                <td>
+                  <input type="text" id="stationHeight">
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td><a href="#" onClick="searchStation()" class="button round tiny">Search Stations</a></td>
+              </tr>
+            </tbody>
+          </table>
+
+
+
+        </div>
+
+        <div class="content" id="panel2">
+          <table>
+            <tbody>
+              <tr>
+                <td>Event id</td>
+                <td>
+                  <input type="text" id="guralp">
+                </td>
+              </tr>
+
+              <tr>
+                <td>Date</td>
+                <td>
+                  <input type="text" id="guralp">
+                </td>
+              </tr>
+
+              <tr>
+                <td>Time</td>
+                <td>
+                  <input type="text" id="guralp">
+                </td>
+              </tr>
+
+              <tr>
+                <td>Event fi</td>
+                <td>
+                  <input type="text" id="guralp">
+                </td>
+              </tr>
+
+              <tr>
+                <td>Event lamda</td>
+                <td>
+                  <input type="text" id="guralp">
+                </td>
+              </tr>
+
+              <tr>
+                <td>Event depth</td>
+                <td>
+                  <input type="text" id="guralp">
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td><a href="#" class="button round tiny">Search Events</a></td>
+              </tr>
+
+            </tbody>
+          </table>
+
+        </div>
+
+
+      </div>
+    </div>
+    <div class="large-8 columns">
+
+      {% easy_map "Greece" 600 600 7 %}
+
+    </div>
+
+
+  </div>
+
+  <div class="row">
+
+
+
+    <table id="results" class="sortable">
       <thead>
-
         <tr>
-          <th>Station</th>
-          <th>Manual Check</th>
-          <th>Latest Pole</th>
-          <th>Last Status Changed</th>
-          <th>Sensor</th>
-          <th>Scream Blocks</th>
-          <th>Gcf Blocks</th>
-          <th>GPS</th>
-          <th>Storage</th>
-          <th>Data Free Space</th>
-          <th>System Free Space</th>
-          <th>Load</th>
-          <th>Uptime</th>
-
+          <th>Name</th>
+          <th>Code</th>
+          <th>Fi</th>
+          <th>Lamda</th>
+          <th>Height</th>
         </tr>
       </thead>
-      <tbody>{% for guralp in latest_guralp_list %}
-        <tr>
 
-          <td><a href=/guralp/{{ guralp.station_code }}>{{ guralp.station_code }} </a></td>
-
-          {% for log in single_log_list %}{% if guralp.station_code = log.station_code %}
-          <td> {{ guralp.status }} </td>
-          <td> {{ log.timestamp }} </td>
-          <td> {{ log.status_changed_timestamp }} </td>
-          <td> {{ log.sensor_last_packet_received }} </td>
-          <td> {{ log.scream_blocks_5 }} </td>
-          <td> {{ log.gcf_last_blocks_5_minutes }} </td>
-
-          <td> {% if log.ntp_status = "true" %} OK! {% elif log.ntp_status = "false" %} <span style="color:blue"> Error! </span> {%endif%}</td>
-          <td> {% if log.storage_state = "Inactive" %} OK! {%else%} {{ log.storage_state }} {%endif%} </td>
-          <td> {{ log.storage_free_space }} </td>
-          <td> {{ log.root_free_filesystem }} </td>
-          <td> {{ log.system_load }} </td>
-          <td> {{ log.system_uptime }} </td>
-              {%endif%}
-            {%endfor%}
-
-          {% endfor %}
-
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<div class="content" id="panel2">
-  <table class="sortable">
-    <thead>
-
-      <tr>
-        <th>Station</th>
-        <th>IP</th>
-        <th>Subnet mask</th>
-        <th>Gateway</th>
-        <th>Internap ip</th>
-        <th>Region</th>
-        <th>Building</th>
-        <th>Address</th>
-        <th>Version</th>
-        <th>Number</th>
-        <th>Edit station</th>
-
-      </tr>
-    </thead>
-    <tbody>{% for guralp in latest_guralp_list %}
-      <tr>
-
-        <td><a href=/guralp/{{ guralp.station_code }}>{{ guralp.station_code }} </a></td>
-        <td>{{guralp.ip}}</td>
-        <td>{{guralp.subnet_mask}}</td>
-        <td>{{guralp.gateway}}</td>
-        <td>{{guralp.internal_ip}}</td>
-        <td>{{guralp.region}}</td>
-        <td>{{guralp.building}}</td>
-        <td>{{guralp.location}}</td>
-        {% for log in single_log_list %}{% if guralp.station_code = log.station_code %}
-        <td>{{log.system_build_machine}}</td>
-        <td>{{log.system_build_number}}</td>
-        {%endif%}
-        {%endfor%}
-        <td> <a href="{% url 'admin.index' %}guralp/guralp/{{guralp.id}}">Edit</a><td>
-
-        {% endfor %}
-
-      </tr>
-    </tbody>
-  </table>
-
-</div>
-
-<div class="content" id="panel3">
-  <table class="sortable">
-    <thead>
-
-      <tr>
-        <th>Timestamp</th>
-        <th>Succeed</th>
-        <th>Failed</th>
-      </tr>
-    </thead>
-    <tbody>{% for logging in logging_list %}
-      <tr>
-        <td>{{ logging.timestamp }}</td>
-        <td>{{ logging.succeed }}</td>
-        <td>{{ logging.failed }}</td>
-          {% endfor %}
-        </tr>
-      </tbody>
     </table>
 
   </div>
 
-</div>
-</div>
-  {% endblock base_body %}
+  <div id="map-canvas"></div>
+
+</body>
+{% endblock base_body %}
