@@ -24,7 +24,7 @@ class events(models.Model):
     def __str__(self):              # __unicode__ on Python 2
           return self.event_id
     event_id = models.CharField(max_length=30)
-    date = models.CharField(max_length=30, null=True)
+    date = models.DateField(null=True)
     time = models.CharField(max_length=30, null=True)
     fi = models.CharField(max_length=30, null=True)
     lamda = models.CharField(max_length=30, null=True)
