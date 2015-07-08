@@ -1,9 +1,12 @@
 {% extends "foundation/base.html" %} {% block base_body %} {% load static %} {% load easy_maps_tags %}
-<script src="{% static 'sorttable.js' %}" type="text/javascript"></script>
+<script src="{% static 'earthquakes/pikaday.js' %}" type="text/javascript"></script>
 
 <html>
 
 <head>
+  <link rel="stylesheet" href="{% static 'earthquakes/css/pikaday.css' %}">
+
+
   <title>Your title
 
     <style>
