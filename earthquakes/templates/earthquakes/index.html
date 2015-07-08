@@ -119,9 +119,16 @@
               </tr>
 
               <tr>
-                <td>Date</td>
+                <td>Start Date</td>
                 <td>
-                  <input type="text" id="eventDate">
+                  <input type="text" id="eventStartDate">
+                </td>
+              </tr>
+
+              <tr>
+                <td>Ending Date</td>
+                <td>
+                  <input type="text" id="eventEndDate">
                 </td>
               </tr>
 
@@ -194,5 +201,10 @@
   </div>
 
 
+  <script>
+      var picker = new Pikaday({ field: document.getElementById('eventStartDate') });
+      var picker = new Pikaday({ field: document.getElementById('eventEndDate') });
+      //picker.setStartRange("1956-01-01");
+  </script>
 </body>
 {% endblock base_body %}
