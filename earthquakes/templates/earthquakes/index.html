@@ -5,10 +5,11 @@
 <html>
 
 <head>
+
   <link rel="stylesheet" href="{% static 'earthquakes/css/pikaday.css' %}">
 
 
-  <title>Your title
+  <title>Earthquakes
 
     <style>
       html,
@@ -120,14 +121,10 @@
               </tr>
 
               <tr>
-                <td>Start Date</td>
+                <td>Date</td>
                 <td>
                   <input type="text" id="eventStartDate">
                 </td>
-              </tr>
-
-              <tr>
-                <td>Ending Date</td>
                 <td>
                   <input type="text" id="eventEndDate">
                 </td>
@@ -136,28 +133,28 @@
               <tr>
                 <td>Time</td>
                 <td>
-                  <input type="text" id="eventTime">
+                  <input type="text" id="eventStartTime">
+                </td>
+                <td>
+                  <input type="text" id="eventEndTime">
                 </td>
               </tr>
-
               <tr>
-                <td>Event fi</td>
+                <td>Depth</td>
                 <td>
-                  <input type="text" id="eventFI">
+                  <input type="text" id="eventLowDepth">
+                </td>
+                <td>
+                  <input type="text" id="eventHighDepth">
                 </td>
               </tr>
-
               <tr>
-                <td>Event lamda</td>
+                <td>MMF</td>
                 <td>
-                  <input type="text" id="eventLamda">
+                  <input type="text" id="eventLowMMF">
                 </td>
-              </tr>
-
-              <tr>
-                <td>Event depth</td>
                 <td>
-                  <input type="text" id="eventDepth">
+                  <input type="text" id="eventHighMMF">
                 </td>
               </tr>
               <tr>
@@ -189,17 +186,14 @@
     <table id="results" class="sortable">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Code</th>
-          <th>Fi</th>
-          <th>Lamda</th>
-          <th>Height</th>
+
         </tr>
       </thead>
 
     </table>
 
   </div>
+  <script>
 
   var picker = new Pikaday(
       {
@@ -222,10 +216,5 @@
 
 </script>
 
-  <script>
-      var picker = new Pikaday({ field: document.getElementById('eventStartDate') });
-      var picker = new Pikaday({ field: document.getElementById('eventEndDate') });
-      //picker.setStartRange("1956-01-01");
-  </script>
 </body>
 {% endblock base_body %}
