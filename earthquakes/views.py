@@ -2,6 +2,9 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from earthquakes.models import stations, events
 from django.core import serializers
+import pytz
+import datetime
+
 
 def stations_api(request):
 
@@ -43,6 +46,23 @@ def events_api(request):
         eventLowDepth = request.GET.get('eventLowDepth')
 
 
+        dt=datetime.datetime.strptime(eventStartDate, "%a %b %d %Y").date()
+        dtt=datetime.datetime.strptime(eventEndDate, "%a %b %d %Y").date()
+        filteredEvents = events.objects.all()
+
+        if eventID:
+            filteredEvents = filteredEvents.filter(event_id=eventID)
+
+        if eventStartDate and eventEndDate:
+            filteredEvents = filteredEvents.filter(datetime__range=[dt, dtt])
+
+        if eventLowDepth and eventHighDepth:
+            filteredEvents = filteredEvents.filter(depth__gte=eventLowDepth, depth__lte=eventHighDepth)
+
+        if eventLowMMF and eventHighMMF:
+            filteredEvents = filteredEvents.filter(mmf__gte=eventLowMMF, mmf__lte=eventHighMMF)
+
+        data = serializers.serialize('json', filteredEvents)
 
         return JsonResponse(data, safe=False)
 
