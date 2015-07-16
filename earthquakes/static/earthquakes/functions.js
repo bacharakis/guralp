@@ -35,13 +35,34 @@ console.log($('#eventID').val());
       tr.append("<td>" + json[i].fields.mmf + "</td>");
       $('#results').append(tr);
 
+      mark=[json[i].fields.event_id, json[i].fields.fi, json[i].fields.lamda, i];
+      locations[i]=mark;
 
-      var marker = new google.maps.Marker({
-        position: myLatlng,
-        title: "Hello World!"
-      });
     }
 
+var map = new google.maps.Map(document.getElementById('map-canvas-2'), {
+  zoom: 7,
+  center: new google.maps.LatLng(40.6388,22.9482),
+  mapTypeId: google.maps.MapTypeId.ROADMAP
+});
+
+var infowindow = new google.maps.InfoWindow();
+
+var marker, i;
+
+for (i = 0; i < locations.length; i++) {
+  marker = new google.maps.Marker({
+    position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+    map: map
+  });
+
+  google.maps.event.addListener(marker, 'click', (function(marker, i) {
+    return function() {
+      infowindow.setContent(locations[i][0]);
+      infowindow.open(map, marker);
+    }
+  })(marker, i));
+}
     // To add the marker to the map, call setMap();
 
     return ret; //you can handle with return value ret here
@@ -84,22 +105,33 @@ function searchStation() {
       tr.append("<td>" + json[i].fields.height + "</td>");
       $('#results').append(tr);
 
-      var myLatlng = new google.maps.LatLng(json[i].fields.fi,json[i].fields.lamda);
-      var mapOptions = {
-        zoom: 9,
-        center: myLatlng
-      }
-      var map = new google.maps.Map(document.getElementById("map-canvas-2"), mapOptions);
-
-      var marker = new google.maps.Marker({
-        position: myLatlng,
-        title: "Hello World!"
-      });
+      mark=[json[i].fields.event_id, json[i].fields.fi, json[i].fields.lamda, i];
+      locations[i]=mark;
     }
 
-    // To add the marker to the map, call setMap();
-    marker.setMap(map);
+    var map = new google.maps.Map(document.getElementById('map-canvas-2'), {
+      zoom: 7,
+      center: new google.maps.LatLng(40.6388,22.9482),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
 
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+
+    for (i = 0; i < locations.length; i++) {
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+}
     return ret; //you can handle with return value ret here
   });
 }
