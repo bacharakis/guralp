@@ -33,14 +33,16 @@ def events_api(request):
 
         #Always use get on request.POST. Correct way of querying a QueryDict.
         eventID = request.GET.get('eventID')
-        eventDate = request.GET.get('date')
-        eventTime = request.GET.get('time')
-        eventFI = request.GET.get('fi')
-        eventLamda = request.GET.get('lamda')
-        eventHeight = request.GET.get('height')
-        eventDepth = request.GET.get('height')
+        eventStartDate = request.GET.get('eventStartDate')
+        eventEndDate = request.GET.get('eventEndDate')
+        eventStartTime = request.GET.get('eventStartTime')
+        eventEndTime = request.GET.get('eventEndTime')
+        eventHighMMF = request.GET.get('eventHighMMF')
+        eventLowMMF = request.GET.get('eventLowMMF')
+        eventHighDepth = request.GET.get('eventHighDepth')
+        eventLowDepth = request.GET.get('eventLowDepth')
 
-        data = serializers.serialize('json', events.objects.filter(id="1") )
+
 
         return JsonResponse(data, safe=False)
 
