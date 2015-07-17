@@ -84,7 +84,6 @@ function searchStation() {
 
   }, function(ret) {
     var json = $.parseJSON(ret);
-    console.log(json["0"].fields.lamda);
 
     $("#results").find("tr:gt(0)").remove();
     var locations= new Array(json.length);
