@@ -133,18 +133,11 @@ function searchStation() {
 
 function clearEvents(){
   $('#eventID').val("");
-  $('#eventDate').val("");
-  $('#eventTime').val("");
-  $('#eventFI').val("");
-  $('#eventLamda').val("");
-  $('#eventDepth').val("");
-
-  $('#DatePicker').DatePicker({
-    flat: true,
-    date: '2008-07-31',
-    current: '2008-07-31',
-    calendars: 1,
-    starts: 1
-  });
+  $('#eventStartDate').val("");
+  $('#eventEndDate').val("");
+  $('#eventLowMMF').val("");
+  $('#eventHighMMF').val("");
+  $('#eventHighDepth').val("");
+  $('#eventLowDepth').val("");
 
 }
