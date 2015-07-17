@@ -38,8 +38,6 @@ def events_api(request):
         eventID = request.GET.get('eventID')
         eventStartDate = request.GET.get('eventStartDate')
         eventEndDate = request.GET.get('eventEndDate')
-        eventStartTime = request.GET.get('eventStartTime')
-        eventEndTime = request.GET.get('eventEndTime')
         eventHighMMF = request.GET.get('eventHighMMF')
         eventLowMMF = request.GET.get('eventLowMMF')
         eventHighDepth = request.GET.get('eventHighDepth')

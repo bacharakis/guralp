@@ -10,8 +10,6 @@ console.log($('#eventID').val());
     "eventID": $('#eventID').val(),
     "eventStartDate": $('#eventStartDate').val(),
     "eventEndDate": $('#eventEndDate').val(),
-    "eventStartTime": $('#eventStartTime').val(),
-    "eventEndTime": $('#eventEndTime').val(),
     "eventLowMMF": $('#eventLowMMF').val(),
     "eventHighMMF": $('#eventHighMMF').val(),
     "eventLowDepth": $('#eventLowDepth').val(),
