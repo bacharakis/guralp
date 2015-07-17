@@ -100,7 +100,7 @@ function searchStation() {
       tr.append("<td>" + json[i].fields.height + "</td>");
       $('#results').append(tr);
 
-      mark=[json[i].fields.event_id, json[i].fields.fi, json[i].fields.lamda, i];
+      mark=[json[i].fields.station_name, json[i].fields.station_code, json[i].fields.fi, json[i].fields.lamda, i];
       locations[i]=mark;
     }
 
@@ -116,13 +116,13 @@ function searchStation() {
 
     for (i = 0; i < locations.length; i++) {
       marker = new google.maps.Marker({
-        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        position: new google.maps.LatLng(locations[i][2], locations[i][3]),
         map: map
       });
 
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
         return function() {
-          infowindow.setContent(locations[i][0]);
+          infowindow.setContent(locations[i][1]+" "+locations[i][0]);
           infowindow.open(map, marker);
         }
       })(marker, i));
