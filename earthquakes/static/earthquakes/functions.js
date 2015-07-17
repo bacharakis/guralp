@@ -3,9 +3,6 @@
 function searchEvents() {
 
 var mark=Array();
-console.log($('#eventHighMMF').val());
-console.log($('#eventLowMMF').val());
-console.log($('#eventID').val());
   $.get('/earthquakes/events', {
     "eventID": $('#eventID').val(),
     "eventStartDate": $('#eventStartDate').val(),
