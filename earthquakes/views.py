@@ -3,7 +3,8 @@ from django.shortcuts import render
 from earthquakes.models import stations, events
 from django.core import serializers
 import pytz
-import datetime
+from array import *
+import datetime,math,cmath
 
 
 def stations_api(request):
@@ -42,7 +43,9 @@ def events_api(request):
         eventLowMMF = request.GET.get('eventLowMMF')
         eventHighDepth = request.GET.get('eventHighDepth')
         eventLowDepth = request.GET.get('eventLowDepth')
-
+        A = request.GET.get('A')
+        F = request.GET.get('F')
+        zoom = request.GET.get('zoom')
 
         dt=datetime.datetime.strptime(eventStartDate, "%a %b %d %Y").date()
         dtt=datetime.datetime.strptime(eventEndDate, "%a %b %d %Y").date()
@@ -59,6 +62,24 @@ def events_api(request):
 
         if eventLowMMF and eventHighMMF:
             filteredEvents = filteredEvents.filter(mmf__gte=eventLowMMF, mmf__lte=eventHighMMF)
+
+        #Distance (in km from the center of the map to the edges
+        zoomlevel = array("i",[1000000, 100000, 10000 , 1000 , 600, 500 , 400 ,300 , 170, 100, 80, 60, 50, 40, 30, 10, 5, 4, 3, 2, 1, 1])
+
+        tmp = []
+        for event in filteredEvents.all():
+            #Degrees to radians
+            lat1=(float(A) * math.pi /180)
+            long1=(float(F) * math.pi/180)
+            lat2=(float(event.fi) * math.pi /180)
+            long2=(float(event.lamda) * math.pi /180)
+
+            #Calculate the distance between two points
+            if(math.acos(math.sin(lat1)*math.sin(lat2)+math.cos(lat1)*math.cos(lat2)*math.cos(long1-long2)) * 6371 <= float(zoomlevel[int(zoom)])):
+                tmp.append(event.id)
+
+        #Get only the events in the area
+        filteredEvents=filteredEvents.filter(id__in=tmp)
 
         data = serializers.serialize('json', filteredEvents)
 

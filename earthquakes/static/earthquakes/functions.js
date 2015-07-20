@@ -119,7 +119,11 @@ var mark=Array();
     "eventLowMMF": $('#eventLowMMF').val(),
     "eventHighMMF": $('#eventHighMMF').val(),
     "eventLowDepth": $('#eventLowDepth').val(),
-    "eventHighDepth": $('#eventHighDepth').val()
+    "eventHighDepth": $('#eventHighDepth').val(),
+    "A": map.getCenter().A,
+    "F": map.getCenter().F,
+    "zoom": map.getZoom(),
+
   }, function(ret) {
 
 clearMarkers();
