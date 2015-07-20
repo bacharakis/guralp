@@ -8,6 +8,94 @@ function initialize(){
 
 }
 
+function appendEvents(ret){
+
+  var json = $.parseJSON(ret);
+
+   $("#results").find("tr:gt(0)").remove();
+   var locations= new Array(json.length);
+   tr = $('<tr>');
+   tr.append("<th>ID</th> <th>DateTime</th> <th>Fi</th><th>Lamda</th><th>Depth</th><th>MMF</th>")
+   $('#results').append(tr);
+   for (var i = 0; i < json.length; i++) {
+     tr = $('<tr/>');
+     tr.append("<td>" + json[i].fields.event_id + "</td>");
+     tr.append("<td>" + json[i].fields.datetime + "</td>");
+     tr.append("<td>" + json[i].fields.fi + "</td>");
+     tr.append("<td>" + json[i].fields.lamda + "</td>");
+     tr.append("<td>" + json[i].fields.depth + "</td>");
+     tr.append("<td>" + json[i].fields.mmf + "</td>");
+     $('#results').append(tr);
+
+     mark=[json[i].fields.event_id, json[i].fields.fi, json[i].fields.lamda, i];
+     locations[i]=mark;
+
+   }
+
+ initialize();
+
+ var infowindow = new google.maps.InfoWindow();
+
+ var marker, i;
+
+ for (i = 0; i < locations.length; i++) {
+ marker = new google.maps.Marker({
+   position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+   map: map
+ });
+
+ google.maps.event.addListener(marker, 'click', (function(marker, i) {
+   return function() {
+     infowindow.setContent(locations[i][0]);
+     infowindow.open(map, marker);
+   }
+ })(marker, i));
+ }
+}
+
+function appendStations(ret){
+
+  var json = $.parseJSON(ret);
+
+  $("#results").find("tr:gt(0)").remove();
+  var locations= new Array(json.length);
+  tr = $('<tr>');
+  tr.append("<th>Name</th> <th>Code</th> <th>Fi</th><th>Lamda</th><th>Heigh</th>")
+  $('#results').append(tr);
+  for (var i = 0; i < json.length; i++) {
+    tr = $('<tr/>');
+    tr.append("<td>" + json[i].fields.station_name + "</td>");
+    tr.append("<td>" + json[i].fields.station_code + "</td>");
+    tr.append("<td>" + json[i].fields.fi + "</td>");
+    tr.append("<td>" + json[i].fields.lamda + "</td>");
+    tr.append("<td>" + json[i].fields.height + "</td>");
+    $('#results').append(tr);
+
+    mark=[json[i].fields.station_name, json[i].fields.station_code, json[i].fields.fi, json[i].fields.lamda, i];
+    locations[i]=mark;
+  }
+
+  initialize();
+
+  var infowindow = new google.maps.InfoWindow();
+
+  var marker, i;
+
+  for (i = 0; i < locations.length; i++) {
+    marker = new google.maps.Marker({
+      position: new google.maps.LatLng(locations[i][2], locations[i][3]),
+      map: map
+    });
+
+    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+      return function() {
+        infowindow.setContent(locations[i][1]+" "+locations[i][0]);
+        infowindow.open(map, marker);
+      }
+    })(marker, i));
+}
+
+}
 function searchEvents() {
 
 var mark=Array();
@@ -21,48 +109,7 @@ var mark=Array();
     "eventHighDepth": $('#eventHighDepth').val()
   }, function(ret) {
 
-   var json = $.parseJSON(ret);
-
-    $("#results").find("tr:gt(0)").remove();
-    var locations= new Array(json.length);
-    tr = $('<tr>');
-    tr.append("<th>ID</th> <th>DateTime</th> <th>Fi</th><th>Lamda</th><th>Depth</th><th>MMF</th>")
-    $('#results').append(tr);
-    for (var i = 0; i < json.length; i++) {
-      tr = $('<tr/>');
-      tr.append("<td>" + json[i].fields.event_id + "</td>");
-      tr.append("<td>" + json[i].fields.datetime + "</td>");
-      tr.append("<td>" + json[i].fields.fi + "</td>");
-      tr.append("<td>" + json[i].fields.lamda + "</td>");
-      tr.append("<td>" + json[i].fields.depth + "</td>");
-      tr.append("<td>" + json[i].fields.mmf + "</td>");
-      $('#results').append(tr);
-
-      mark=[json[i].fields.event_id, json[i].fields.fi, json[i].fields.lamda, i];
-      locations[i]=mark;
-
-    }
-
-initialize();
-
-var infowindow = new google.maps.InfoWindow();
-
-var marker, i;
-
-for (i = 0; i < locations.length; i++) {
-  marker = new google.maps.Marker({
-    position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-    map: map
-  });
-
-  google.maps.event.addListener(marker, 'click', (function(marker, i) {
-    return function() {
-      infowindow.setContent(locations[i][0]);
-      infowindow.open(map, marker);
-    }
-  })(marker, i));
-}
-    // To add the marker to the map, call setMap();
+      appendEvents(ret);
 
     return ret; //you can handle with return value ret here
   });
@@ -87,45 +134,7 @@ function searchStation() {
     "height": $('#stationHeight').val()
 
   }, function(ret) {
-    var json = $.parseJSON(ret);
-
-    $("#results").find("tr:gt(0)").remove();
-    var locations= new Array(json.length);
-    tr = $('<tr>');
-    tr.append("<th>Name</th> <th>Code</th> <th>Fi</th><th>Lamda</th><th>Heigh</th>")
-    $('#results').append(tr);
-    for (var i = 0; i < json.length; i++) {
-      tr = $('<tr/>');
-      tr.append("<td>" + json[i].fields.station_name + "</td>");
-      tr.append("<td>" + json[i].fields.station_code + "</td>");
-      tr.append("<td>" + json[i].fields.fi + "</td>");
-      tr.append("<td>" + json[i].fields.lamda + "</td>");
-      tr.append("<td>" + json[i].fields.height + "</td>");
-      $('#results').append(tr);
-
-      mark=[json[i].fields.station_name, json[i].fields.station_code, json[i].fields.fi, json[i].fields.lamda, i];
-      locations[i]=mark;
-    }
-
-    initialize();
-
-    var infowindow = new google.maps.InfoWindow();
-
-    var marker, i;
-
-    for (i = 0; i < locations.length; i++) {
-      marker = new google.maps.Marker({
-        position: new google.maps.LatLng(locations[i][2], locations[i][3]),
-        map: map
-      });
-
-      google.maps.event.addListener(marker, 'click', (function(marker, i) {
-        return function() {
-          infowindow.setContent(locations[i][1]+" "+locations[i][0]);
-          infowindow.open(map, marker);
-        }
-      })(marker, i));
-}
+      appendStations(ret);
     return ret; //you can handle with return value ret here
   });
 }
