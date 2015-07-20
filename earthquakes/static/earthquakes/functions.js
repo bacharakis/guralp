@@ -42,7 +42,6 @@ function appendEvents(ret){
 
    }
 
- initialize();
 
  var infowindow = new google.maps.InfoWindow();
 
