@@ -18,13 +18,36 @@ def stations_api(request):
         fi = request.GET.get('fi')
         lamda = request.GET.get('lamda')
         height = request.GET.get('height')
+        A = request.GET.get('A')
+        F = request.GET.get('F')
+        zoom = request.GET.get('zoom')
 
-        data = serializers.serialize('json', stations.objects.filter(station_name__icontains=name)\
-        .filter(station_code__icontains=code)\
+
+        filteredStations=stations.objects.filter(station_name__startswith=name)\
+        .filter(station_code__startswith=code.upper())\
         .filter(fi__icontains=fi)\
         .filter(lamda__icontains=lamda)\
-        .filter(height__icontains=height) )
+        .filter(height__icontains=height)
 
+        #Distance (in km from the center of the map to the edges
+        zoomlevel = array("i",[1000000, 100000, 10000 , 1000 , 600, 500 , 400 ,300 , 170, 100, 80, 60, 50, 40, 30, 10, 5, 4, 3, 2, 1, 1])
+
+        tmp = []
+        for station in filteredStations.all():
+            #Degrees to radians
+            lat1=(float(A) * math.pi /180)
+            long1=(float(F) * math.pi/180)
+            lat2=(float(station.fi) * math.pi /180)
+            long2=(float(station.lamda) * math.pi /180)
+
+            #Calculate the distance between two points
+            if(math.acos(math.sin(lat1)*math.sin(lat2)+math.cos(lat1)*math.cos(lat2)*math.cos(long1-long2)) * 6371 <= float(zoomlevel[int(zoom)])):
+                tmp.append(station.id)
+
+        #Get only the events in the area
+        filteredStations=filteredStations.filter(id__in=tmp)
+
+        data = serializers.serialize('json', filteredStations)
 
         return JsonResponse(data, safe=False)
 
@@ -52,7 +75,7 @@ def events_api(request):
         filteredEvents = events.objects.all()
 
         if eventID:
-            filteredEvents = filteredEvents.filter(event_id=eventID)
+            filteredEvents = filteredEvents.filter(event_id__icontains=eventID)
 
         if eventStartDate and eventEndDate:
             filteredEvents = filteredEvents.filter(datetime__range=[dt, dtt])

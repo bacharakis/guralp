@@ -160,7 +160,10 @@ function searchStation() {
     "code": $('#stationCode').val(),
     "fi": $('#stationFi').val(),
     "lamda": $('#stationLamda').val(),
-    "height": $('#stationHeight').val()
+    "height": $('#stationHeight').val(),
+    "A": map.getCenter().A,
+    "F": map.getCenter().F,
+    "zoom" : map.getZoom(),
 
   }, function(ret) {
       clearMarkers();
