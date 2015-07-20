@@ -1,4 +1,4 @@
-
+var markersArray = [];
 
 function initialize(a,f){
 
@@ -53,6 +53,7 @@ function appendEvents(ret){
    position: new google.maps.LatLng(locations[i][1], locations[i][2]),
    map: map
  });
+ markersArray.push(marker);
 
  google.maps.event.addListener(marker, 'click', (function(marker, i) {
    return function() {
@@ -85,17 +86,20 @@ function appendStations(ret){
     locations[i]=mark;
   }
 
-  initialize();
+
+
 
   var infowindow = new google.maps.InfoWindow();
 
   var marker, i;
 
   for (i = 0; i < locations.length; i++) {
+
     marker = new google.maps.Marker({
       position: new google.maps.LatLng(locations[i][2], locations[i][3]),
       map: map
     });
+    markersArray.push(marker);
 
     google.maps.event.addListener(marker, 'click', (function(marker, i) {
       return function() {
@@ -135,6 +139,17 @@ function clearStation(){
   $('#stationHeight').val("");
 
 }
+function clearMarkers(){
+
+
+  for (var i = 0; i < markersArray.length; i++ ) {
+    markersArray[i].setMap(null);
+  }
+  markersArray.length = 0;
+
+
+}
+
 function searchStation() {
   $.get('/earthquakes/stations', {
     "name": $('#stationName').val(),
@@ -144,6 +159,7 @@ function searchStation() {
     "height": $('#stationHeight').val()
 
   }, function(ret) {
+      clearMarkers();
       appendStations(ret);
     return ret; //you can handle with return value ret here
   });
