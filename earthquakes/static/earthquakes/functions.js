@@ -1,11 +1,21 @@
-function initialize(){
 
+
+function initialize(a,f){
+
+if(a && f){
+  map = new google.maps.Map(document.getElementById('map-canvas-2'), {
+   zoom: 7,
+   center: new google.maps.LatLng(a,f),
+   mapTypeId: google.maps.MapTypeId.ROADMAP
+ });
+
+}else{
   map = new google.maps.Map(document.getElementById('map-canvas-2'), {
    zoom: 7,
    center: new google.maps.LatLng(40.6388,22.9482),
    mapTypeId: google.maps.MapTypeId.ROADMAP
  });
-
+}
 }
 
 function appendEvents(ret){
