@@ -1,4 +1,12 @@
+function initialize(){
 
+  map = new google.maps.Map(document.getElementById('map-canvas-2'), {
+   zoom: 7,
+   center: new google.maps.LatLng(40.6388,22.9482),
+   mapTypeId: google.maps.MapTypeId.ROADMAP
+ });
+
+}
 
 function searchEvents() {
 
@@ -35,11 +43,7 @@ var mark=Array();
 
     }
 
-var map = new google.maps.Map(document.getElementById('map-canvas-2'), {
-  zoom: 7,
-  center: new google.maps.LatLng(40.6388,22.9482),
-  mapTypeId: google.maps.MapTypeId.ROADMAP
-});
+initialize();
 
 var infowindow = new google.maps.InfoWindow();
 
@@ -103,11 +107,7 @@ function searchStation() {
       locations[i]=mark;
     }
 
-    var map = new google.maps.Map(document.getElementById('map-canvas-2'), {
-      zoom: 7,
-      center: new google.maps.LatLng(40.6388,22.9482),
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    });
+    initialize();
 
     var infowindow = new google.maps.InfoWindow();
 
