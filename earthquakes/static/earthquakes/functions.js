@@ -124,6 +124,7 @@ var mark=Array();
 
 clearMarkers();
 
+appendEvents(ret);
     return ret; //you can handle with return value ret here
   });
 
