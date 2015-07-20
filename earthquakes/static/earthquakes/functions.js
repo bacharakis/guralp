@@ -122,7 +122,7 @@ var mark=Array();
     "eventHighDepth": $('#eventHighDepth').val()
   }, function(ret) {
 
-      appendEvents(ret);
+clearMarkers();
 
     return ret; //you can handle with return value ret here
   });
