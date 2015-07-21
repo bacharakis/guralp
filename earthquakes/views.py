@@ -26,7 +26,7 @@ def stations_api(request):
         vs30Low = request.GET.get('vs30Low')
         owner = request.GET.get('owner')
 
-        filteredStations=stations.objects.filter(station_name__startswith=name)\
+        filteredStations=stations.objects.filter(station_name__icontains=name)\
         .filter(station_code__startswith=code.upper())\
         .filter(height__icontains=height) \
         .filter(soil_class__icontains=soilClass) \
