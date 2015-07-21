@@ -21,13 +21,19 @@ def stations_api(request):
         A = request.GET.get('A')
         F = request.GET.get('F')
         zoom = request.GET.get('zoom')
-
+        soilClass = request.GET.get('soilClass')
+        vs30High = request.GET.get('vs30High')
+        vs30Low = request.GET.get('vs30Low')
+        owner = request.GET.get('owner')
 
         filteredStations=stations.objects.filter(station_name__startswith=name)\
         .filter(station_code__startswith=code.upper())\
-        .filter(fi__icontains=fi)\
-        .filter(lamda__icontains=lamda)\
-        .filter(height__icontains=height)
+        .filter(height__icontains=height) \
+        .filter(soil_class__icontains=soilClass) \
+        .filter(owner__icontains=owner)
+
+        if vs30High and vs30Low:
+            filteredStations=filteredStations.filter(vs30__gte=vs30Low, vs30__lte=vs30High)
 
         #Distance (in km from the center of the map to the edges
         zoomlevel = array("i",[1000000, 100000, 10000 , 1000 , 600, 500 , 400 ,300 , 170, 100, 80, 60, 50, 40, 30, 10, 5, 4, 3, 2, 1, 1])
