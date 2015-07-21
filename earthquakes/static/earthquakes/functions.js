@@ -141,9 +141,11 @@ appendEvents(ret);
 function clearStation(){
   $('#stationName').val("");
   $('#stationCode').val("");
-  $('#stationFi').val("");
-  $('#stationLamda').val("");
+  $('#stationVs30High').val("");
+  $('#stationVs30Low').val("");
   $('#stationHeight').val("");
+  $('#stationOwner').val("");
+  $('#stationSoilClass').val("");
 
 }
 function clearMarkers(){
