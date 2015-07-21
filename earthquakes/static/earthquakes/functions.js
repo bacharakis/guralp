@@ -25,7 +25,7 @@ function appendEvents(ret){
    $("#results").find("tr:gt(0)").remove();
    var locations= new Array(json.length);
    tr = $('<tr>');
-   tr.append("<th>ID</th> <th>DateTime</th> <th>Fi</th><th>Lamda</th><th>Depth</th><th>MMF</th>")
+   tr.append("<th>ID</th> <th>DateTime</th> <th>Lat</th><th>Long</th><th>Depth</th><th>MMF</th>")
    $('#results').append(tr);
    for (var i = 0; i < json.length; i++) {
      tr = $('<tr/>');
@@ -70,7 +70,7 @@ function appendStations(ret){
   $("#results").find("tr:gt(0)").remove();
   var locations= new Array(json.length);
   tr = $('<tr>');
-  tr.append("<th>Name</th> <th>Code</th> <th>Fi</th><th>Lamda</th><th>Heigh</th><th>Soil Class</th><th>VS30</th><th>Owner</th>")
+  tr.append("<th>Name</th> <th>Code</th> <th>Lat</th><th>Long</th><th>Heigh</th><th>Soil Class</th><th>VS30</th><th>Owner</th>")
   $('#results').append(tr);
   for (var i = 0; i < json.length; i++) {
     tr = $('<tr/>');
