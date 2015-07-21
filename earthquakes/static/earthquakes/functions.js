@@ -70,7 +70,7 @@ function appendStations(ret){
   $("#results").find("tr:gt(0)").remove();
   var locations= new Array(json.length);
   tr = $('<tr>');
-  tr.append("<th>Name</th> <th>Code</th> <th>Fi</th><th>Lamda</th><th>Heigh</th>")
+  tr.append("<th>Name</th> <th>Code</th> <th>Fi</th><th>Lamda</th><th>Heigh</th><th>Soil Class</th><th>VS30</th><th>Owner</th>")
   $('#results').append(tr);
   for (var i = 0; i < json.length; i++) {
     tr = $('<tr/>');
@@ -79,6 +79,9 @@ function appendStations(ret){
     tr.append("<td>" + json[i].fields.fi + "</td>");
     tr.append("<td>" + json[i].fields.lamda + "</td>");
     tr.append("<td>" + json[i].fields.height + "</td>");
+    tr.append("<td>" + json[i].fields.soil_class + "</td>");
+    tr.append("<td>" + json[i].fields.vs30 + "</td>");
+    tr.append("<td>" + json[i].fields.owner + "</td>");
     $('#results').append(tr);
 
     mark=[json[i].fields.station_name, json[i].fields.station_code, json[i].fields.fi, json[i].fields.lamda, i];
