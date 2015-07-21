@@ -161,8 +161,6 @@ function searchStation() {
   $.get('/earthquakes/stations', {
     "name": $('#stationName').val(),
     "code": $('#stationCode').val(),
-    "fi": $('#stationFi').val(),
-    "lamda": $('#stationLamda').val(),
     "height": $('#stationHeight').val(),
     "A": map.getCenter().A,
     "F": map.getCenter().F,
