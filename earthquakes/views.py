@@ -26,7 +26,7 @@ def stations_api(request):
         vs30Low = request.GET.get('vs30Low')
         owner = request.GET.get('owner')
 
-        filteredStations=stations.objects.filter(station_name__startswith=name)\
+        filteredStations=stations.objects.filter(station_name__icontains=name)\
         .filter(station_code__startswith=code.upper())\
         .filter(height__icontains=height) \
         .filter(soil_class__icontains=soilClass) \
@@ -34,6 +34,10 @@ def stations_api(request):
 
         if vs30High and vs30Low:
             filteredStations=filteredStations.filter(vs30__gte=vs30Low, vs30__lte=vs30High)
+        elif vs30High and not vs30Low:
+            filteredStations=filteredStations.filter(vs30__lte=vs30High)
+        elif vs30Low and not vs30High:
+            filteredStations=filteredStations.filter(vs30__gte=vs30Low)
 
         #Distance (in km from the center of the map to the edges
         zoomlevel = array("i",[1000000, 100000, 10000 , 1000 , 600, 500 , 400 ,300 , 170, 100, 80, 60, 50, 40, 30, 10, 5, 4, 3, 2, 1, 1])
@@ -88,9 +92,18 @@ def events_api(request):
 
         if eventLowDepth and eventHighDepth:
             filteredEvents = filteredEvents.filter(depth__gte=eventLowDepth, depth__lte=eventHighDepth)
+        elif eventLowDepth and not eventHighDepth:
+            filteredEvents = filteredEvents.filter(depth__gte=eventLowDepth)
+        elif eventHighDepth and not eventLowDepth:
+            filteredEvents = filteredEvents.filter(depth__lte=eventHighDepth)
 
         if eventLowMMF and eventHighMMF:
             filteredEvents = filteredEvents.filter(mmf__gte=eventLowMMF, mmf__lte=eventHighMMF)
+        elif eventLowMMF and not eventHighMMF:
+            filteredEvents = filteredEvents.filter(mmf__gte=eventLowMMF)
+        elif eventHighMMF and not eventLowMMF:
+            filteredEvents = filteredEvents.filter(mmf__lte=eventHighMMF)
+
 
         #Distance (in km from the center of the map to the edges
         zoomlevel = array("i",[1000000, 100000, 10000 , 1000 , 600, 500 , 400 ,300 , 170, 100, 80, 60, 50, 40, 30, 10, 5, 4, 3, 2, 1, 1])
