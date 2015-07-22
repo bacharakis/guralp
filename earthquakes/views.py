@@ -34,6 +34,10 @@ def stations_api(request):
 
         if vs30High and vs30Low:
             filteredStations=filteredStations.filter(vs30__gte=vs30Low, vs30__lte=vs30High)
+        elif vs30High and not vs30Low:
+            filteredStations=filteredStations.filter(vs30__lte=vs30High)
+        elif vs30Low and not vs30High:
+            filteredStations=filteredStations.filter(vs30__gte=vs30Low)
 
         #Distance (in km from the center of the map to the edges
         zoomlevel = array("i",[1000000, 100000, 10000 , 1000 , 600, 500 , 400 ,300 , 170, 100, 80, 60, 50, 40, 30, 10, 5, 4, 3, 2, 1, 1])
