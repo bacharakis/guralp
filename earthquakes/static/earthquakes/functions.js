@@ -123,9 +123,10 @@ var mark=Array();
     "eventHighMMF": $('#eventHighMMF').val(),
     "eventLowDepth": $('#eventLowDepth').val(),
     "eventHighDepth": $('#eventHighDepth').val(),
-    "A": map.getCenter().A,
-    "F": map.getCenter().F,
+    "A": map.getCenter().G,
+    "F": map.getCenter().K,
     "zoom": map.getZoom(),
+    "includeMap" : $('#includeMap').prop("checked"),
 
   }, function(ret) {
 
@@ -168,9 +169,10 @@ function searchStation() {
     "vs30High": $('#stationVs30High').val(),
     "vs30Low": $('#stationVs30Low').val(),
     "owner": $('#stationOwner').val(),
-    "A": map.getCenter().A,
-    "F": map.getCenter().F,
+    "A": map.getCenter().G,
+    "F": map.getCenter().K,
     "zoom" : map.getZoom(),
+    "includeMap" : $('#includeMap').prop("checked"),
 
   }, function(ret) {
       clearMarkers();

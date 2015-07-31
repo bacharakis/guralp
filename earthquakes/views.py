@@ -25,6 +25,7 @@ def stations_api(request):
         vs30High = request.GET.get('vs30High')
         vs30Low = request.GET.get('vs30Low')
         owner = request.GET.get('owner')
+        includeMap = request.GET.get('includeMap')
 
         filteredStations=stations.objects.filter(station_name__icontains=name)\
         .filter(station_code__startswith=code.upper())\
@@ -39,23 +40,24 @@ def stations_api(request):
         elif vs30Low and not vs30High:
             filteredStations=filteredStations.filter(vs30__gte=vs30Low)
 
-        #Distance (in km from the center of the map to the edges
-        zoomlevel = array("i",[1000000, 100000, 10000 , 1000 , 600, 500 , 400 ,300 , 170, 100, 80, 60, 50, 40, 30, 10, 5, 4, 3, 2, 1, 1])
+        #If includeMap is selected then process for stations around the area
+        if includeMap == "true":
+            #Distance (in km from the center of the map to the edges
+            zoomlevel = array("i",[1000000, 100000, 10000 , 1000 , 600, 500 , 400 ,300 , 170, 100, 70, 50, 30, 20, 10, 5, 4, 3, 2, 1, 1, 1])
 
-        tmp = []
-        for station in filteredStations.all():
-            #Degrees to radians
-            lat1=(float(A) * math.pi /180)
-            long1=(float(F) * math.pi/180)
-            lat2=(float(station.fi) * math.pi /180)
-            long2=(float(station.lamda) * math.pi /180)
+            tmp = []
+            for station in filteredStations.all():
+                #Degrees to radians
+                lat1=(float(A) * math.pi /180)
+                long1=(float(F) * math.pi/180)
+                lat2=(float(station.fi) * math.pi /180)
+                long2=(float(station.lamda) * math.pi /180)
 
-            #Calculate the distance between two points
-            if(math.acos(math.sin(lat1)*math.sin(lat2)+math.cos(lat1)*math.cos(lat2)*math.cos(long1-long2)) * 6371 <= float(zoomlevel[int(zoom)])):
-                tmp.append(station.id)
-
-        #Get only the events in the area
-        filteredStations=filteredStations.filter(id__in=tmp)
+                #Calculate the distance between two points
+                if(math.acos(math.sin(lat1)*math.sin(lat2)+math.cos(lat1)*math.cos(lat2)*math.cos(long1-long2)) * 6371 <= float(zoomlevel[int(zoom)])):
+                    tmp.append(station.id)
+            #Get only the events in the area
+            filteredStations=filteredStations.filter(id__in=tmp)
 
         data = serializers.serialize('json', filteredStations)
 
@@ -79,6 +81,7 @@ def events_api(request):
         A = request.GET.get('A')
         F = request.GET.get('F')
         zoom = request.GET.get('zoom')
+        includeMap = request.GET.get('includeMap')
 
         dt=datetime.datetime.strptime(eventStartDate, "%a %b %d %Y").date()
         dtt=datetime.datetime.strptime(eventEndDate, "%a %b %d %Y").date()
@@ -104,24 +107,24 @@ def events_api(request):
         elif eventHighMMF and not eventLowMMF:
             filteredEvents = filteredEvents.filter(mmf__lte=eventHighMMF)
 
+        if includeMap == "true":
+            #Distance (in km from the center of the map to the edges
+            zoomlevel = array("i",[1000000, 100000, 10000 , 1000 , 600, 500 , 400 ,300 , 170, 100, 80, 60, 50, 40, 30, 10, 5, 4, 3, 2, 1, 1])
 
-        #Distance (in km from the center of the map to the edges
-        zoomlevel = array("i",[1000000, 100000, 10000 , 1000 , 600, 500 , 400 ,300 , 170, 100, 80, 60, 50, 40, 30, 10, 5, 4, 3, 2, 1, 1])
+            tmp = []
+            for event in filteredEvents.all():
+                #Degrees to radians
+                lat1=(float(A) * math.pi /180)
+                long1=(float(F) * math.pi/180)
+                lat2=(float(event.fi) * math.pi /180)
+                long2=(float(event.lamda) * math.pi /180)
 
-        tmp = []
-        for event in filteredEvents.all():
-            #Degrees to radians
-            lat1=(float(A) * math.pi /180)
-            long1=(float(F) * math.pi/180)
-            lat2=(float(event.fi) * math.pi /180)
-            long2=(float(event.lamda) * math.pi /180)
+                #Calculate the distance between two points
+                if(math.acos(math.sin(lat1)*math.sin(lat2)+math.cos(lat1)*math.cos(lat2)*math.cos(long1-long2)) * 6371 <= float(zoomlevel[int(zoom)])):
+                    tmp.append(event.id)
 
-            #Calculate the distance between two points
-            if(math.acos(math.sin(lat1)*math.sin(lat2)+math.cos(lat1)*math.cos(lat2)*math.cos(long1-long2)) * 6371 <= float(zoomlevel[int(zoom)])):
-                tmp.append(event.id)
-
-        #Get only the events in the area
-        filteredEvents=filteredEvents.filter(id__in=tmp)
+            #Get only the events in the area
+            filteredEvents=filteredEvents.filter(id__in=tmp)
 
         data = serializers.serialize('json', filteredEvents)
 
