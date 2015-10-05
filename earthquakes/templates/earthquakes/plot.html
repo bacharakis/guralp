@@ -16,11 +16,14 @@
   <div class="row">
     <h3>Ploting earthquake files</h3>
   </div>
-
+  <div class="row">
+    <p>Information about the earthquake activity at: {{ datetime }}</p>
+  </div>
   <div class="row">
     <div class="large-10 columns">
       <section class="container">
         <div class="large-4 columns text-center">
+          <p> Avaliable files</p>
           <select style="height:200px;" id="leftValues" height=200px multiple>
             {%for file in files %}
             <option>{{file.file_name}}</option>
@@ -30,16 +33,19 @@
         </div>
         <div class="large-4 columns text-center">
           <div class="button-bar text-center">
-
+            </br>
+            </br>
             <a href="#" onClick="btnLeft()" class="small button secondary">
               << </a>
 
                 <a href="#" onClick="btnRight()" class="small button secondary"> >> </a>
 
           </div>
-          <a href="#" class="button round">Plot graph</a>
+          <a href="#" onClick="plot()" class="button round">Plot graph</a>
         </div>
-        <div class="large-4 columns">
+
+        <div class="large-4 columns text-center">
+          <p>Files to plot</p>
           <select style="height:200px;" id="rightValues" size="5" multiple></select>
         </div>
 
