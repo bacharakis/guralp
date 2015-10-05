@@ -191,3 +191,14 @@ function clearEvents(){
   $('#eventLowDepth').val("");
 
 }
+
+function btnRight() {
+    var selectedItem = $("#leftValues option:selected");
+    $("#rightValues").append(selectedItem);
+}
+
+
+function btnLeft() {
+    var selectedItem = $("#rightValues option:selected");
+    $("#leftValues").append(selectedItem);
+}
