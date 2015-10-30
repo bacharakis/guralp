@@ -2,10 +2,14 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from earthquakes.models import stations, events
 from django.core import serializers
+from time import time,strftime
+import time
 import pytz
 from array import *
 import datetime,math,cmath
-
+from pymongo import MongoClient
+from json import JSONEncoder
+from bson.json_util import dumps
 
 def stations_api(request):
 
@@ -131,6 +135,47 @@ def events_api(request):
         return JsonResponse(data, safe=False)
 
     return render(request, 'earthquakes/index.html')
+
+def get_filenames_datetime_range(request):
+    try:
+        client = MongoClient()
+        db = client.test_database
+    except:
+        print "Couldn't connect to mongoDB database"
+
+    try:
+        collection = db.files
+    except:
+        print "Couldn't retreive files collection"
+
+
+    if request.method == 'GET':
+        eventStartDate = request.GET.get('eventStartDate')
+        eventEndDate = request.GET.get('eventEndDate')
+        try:
+            start = strftime("%Y-%m-%dTH",time.strptime(eventStartDate,"%a %b %d %Y"))
+            end = strftime("%Y-%m-%dTH",time.strptime(eventEndDate,"%a %b %d %Y"))
+            files_collection = collection.find({ "dateTime": { "$gte" : start, "$lte": end }}, {"file_name": 1 })
+        except Exception,e:
+            print e
+
+        try:
+            #parsing pymongo Cursor to dict
+            objects = []
+            for single_file in files_collection:
+                objects.append(single_file)
+
+        except Exception,e:
+            print e
+
+        try:
+            #dict to json
+            json_string = dumps(objects)
+        except Exception,e:
+            print e
+
+        return JsonResponse(json_string, safe=False)
+
 
 
 

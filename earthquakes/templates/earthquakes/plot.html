@@ -1,0 +1,60 @@
+{% extends "foundation/base.html" %} {% block base_body %} {% load static %}
+<script src="{% static 'earthquakes/pikaday.js' %}" type="text/javascript"></script>
+<script src="{% static 'earthquakes/functions.js' %}" type="text/javascript"></script>
+<script src="{% static 'earthquakes/moment.js' %}" type="text/javascript"></script>
+<script src="{% static 'earthquakes/sortable.js' %}" type="text/javascript"></script>
+<script src="{% static 'earthquakes/Chart.js' %}" type="text/javascript"></script>
+<html>
+
+<head>
+
+  <script>
+  </script>
+</head>
+
+<body>
+  <div class="row">
+    <h3>Ploting earthquake files</h3>
+  </div>
+  <div class="row">
+    <p>Information about the earthquake activity at: {{ datetime }}</p>
+  </div>
+  <div class="row">
+    <div class="large-10 columns">
+      <section class="container">
+        <div class="large-4 columns text-center">
+          <p> Avaliable files</p>
+          <select style="height:200px;" id="leftValues" height=200px multiple>
+            {%for file in files %}
+            <option>{{file.file_name}}</option>
+
+            {%endfor%}
+          </select>
+        </div>
+        <div class="large-4 columns text-center">
+          <div class="button-bar text-center">
+            </br>
+            </br>
+            <a href="#" onClick="btnLeft()" class="small button secondary">
+              << </a>
+
+                <a href="#" onClick="btnRight()" class="small button secondary"> >> </a>
+
+          </div>
+          <a href="#" onClick="plot()" class="button round">Plot graph</a>
+        </div>
+
+        <div class="large-4 columns text-center">
+          <p>Files to plot</p>
+          <select style="height:200px;" id="rightValues" size="5" multiple></select>
+        </div>
+
+
+      </section>
+
+    </div>
+  </div>
+</body>
+
+</html>
+{% endblock base_body %}
