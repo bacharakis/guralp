@@ -9,8 +9,6 @@ urlpatterns = patterns('',
     url(r'^plot$', views.plotting_files, name='plotting_files'),
     url(r'^plot_station$', views.plotting_station_files, name='plotting_station_files'),
     url(r'^get_files$', views.get_files_json, name='get_files_json'),
-    url(r'^charts$', views.linechart),
-    url(r'^get_filenames$', views.get_filenames, name='get_filenames'),
     url(r'^download$', views.download_files),
     url(r'^chart.html', views.chart),
 
