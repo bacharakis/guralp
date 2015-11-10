@@ -342,3 +342,46 @@ def chart(request):
                 print c
 
             return render(request, 'earthquakes/chart.html', { 'point_chart' : chart } )
+
+def plotting_station_files(request):
+    if request.GET:
+        try:
+            station_code = request.GET['code']
+        except Exception,e:
+            print "Couldn't retreive datetime from GET",e
+
+        try:
+            client = MongoClient()
+            db = client.test_database
+        except Exception,e:
+            print "Couldn't connect to mongoDB database"
+
+        try:
+            collection = db.files
+        except Exception,e:
+            print e
+        try:
+            files_collection = collection.find({ "station": station_code }, {"file_name" : 1 })
+            if request.GET['pr'] == "true" and request.GET['un'] == "true" and request.GET['sp'] == "true":
+                files_collection = collection.find({ "station": station_code }, {"file_name" : 1 })
+            elif request.GET['pr'] == "true" and request.GET['un']:
+                files_collection = collection.find({ "$and" : [ {"station": station_code }, { "type" : "unprocessed"}, { "type" : "processed"}] },{"file_name" : 1 })
+                #files_collection = collection.find({ "station": station_code, "type" : "processed"}, {"file_name" : 1 })
+            elif request.GET['pr'] == "true" and request.GET['sp']:
+                files_collection = collection.find({ "$and" : [ {"station": station_code }, { "type" : "spectra"}, { "type" : "processed"}] },{"file_name" : 1 })
+            elif request.GET['un'] == "true" and request.GET['un']:
+                files_collection = collection.find({ "$and" : [ {"station": station_code }, { "type" : "unprocessed"}, { "type" : "spectra"}] },{"file_name" : 1 })
+            elif request.GET['un']:
+                files_collection = collection.find({ "$and" : [ {"station": station_code }, { "type" : "unprocessed"}] },{"file_name" : 1 })
+            elif request.GET['pr']:
+                files_collection = collection.find({ "$and" : [ {"station": station_code }, { "type" : "processed"}] },{"file_name" : 1 })
+            elif request.GET['sp']:
+                files_collection = collection.find({ "$and" : [ {"station": station_code }, { "type" : "spectra"}] },{"file_name" : 1 })
+
+
+
+        except Exception,e:
+            print e
+
+
+        return render(request, 'earthquakes/plot_station.html', { 'files' : files_collection, 'station_code' : station_code } )
