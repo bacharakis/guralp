@@ -33,7 +33,7 @@ console.log("hi");
 
 
 }
-function plot_graph(ret){
+function plot(ret){
 
   var json_items = JSON.stringify($("#rightValues").val())
   $.each($("#rightValues").val(), function(i, obj) {
