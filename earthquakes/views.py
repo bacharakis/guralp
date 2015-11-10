@@ -202,3 +202,61 @@ def index(request):
 
 
     return render(request, 'earthquakes/index.html', { 'stations_list' : stations_list } )
+
+def plotting_files(request):
+    if request.GET:
+        try:
+            get_datetime = request.GET['datetime']
+        except Exception,e:
+            print "Couldn't retreive datetime from GET",e
+
+        try:
+            client = MongoClient()
+            db = client.test_database
+        except Exception,e:
+            print "Couldn't connect to mongoDB database"
+
+        try:
+            collection = db.files
+        except Exception,e:
+            print e
+
+        try: #construct datetime from string
+            received_datetime = datetime.datetime.strptime(get_datetime, "%Y-%m-%dT%H:%M:%SZ")
+
+        except Exception,e:
+            print "Couldn't parse date",e
+
+        try:
+            start_date = received_datetime + datetime.timedelta(hours=1)
+            new_start_date = start_date.strftime("%Y-%m-%dTH%H:%M:%SZ")
+            end_date = received_datetime + datetime.timedelta(hours=-1)
+            new_end_date = end_date.strftime("%Y-%m-%dTH%H:%M:%SZ")
+
+        except Exception,e:
+            print "Couldn't calculate start and end dates",e
+        try:
+            files_collection = collection.find({ "dateTime": { "$gte" : new_end_date, "$lte": new_start_date }}, {"file_name" : 1 })
+
+            if request.GET['pr'] == "true" and request.GET['un'] == "true" and request.GET['sp'] == "true":
+                files_collection = collection.find({ "station": station_code }, {"file_name" : 1 })
+                print "FULLEXTEA"
+            elif request.GET['pr'] == "true" and request.GET['un']:
+                print "nai"
+                files_collection = collection.find({ "$and" : [ { "dateTime": { "$gte" : new_end_date, "$lte": new_start_date }}, { "type" : "unprocessed"}, { "type" : "processed"}] },{"file_name" : 1 })
+                #files_collection = collection.find({ "station": station_code, "type" : "processed"}, {"file_name" : 1 })
+            elif request.GET['pr'] == "true" and request.GET['sp']:
+                files_collection = collection.find({ "$and" : [ { "dateTime": { "$gte" : new_end_date, "$lte": new_start_date }}, { "type" : "spectra"}, { "type" : "processed"}] },{"file_name" : 1 })
+            elif request.GET['un'] == "true" and request.GET['un']:
+                files_collection = collection.find({ "$and" : [ { "dateTime": { "$gte" : new_end_date, "$lte": new_start_date }}, { "type" : "unprocessed"}, { "type" : "spectra"}] },{"file_name" : 1 })
+            elif request.GET['un'] == "true":
+                files_collection = collection.find({ "$and" : [ { "dateTime": { "$gte" : new_end_date, "$lte": new_start_date }}, { "type" : "unprocessed"}] },{"file_name" : 1 })
+            elif request.GET['pr'] == "true":
+                files_collection = collection.find({ "$and" : [ { "dateTime": { "$gte" : new_end_date, "$lte": new_start_date }}, { "type" : "processed"}] },{"file_name" : 1 })
+            elif request.GET['sp'] == "true":
+                files_collection = collection.find({ "$and" : [ { "dateTime": { "$gte" : new_end_date, "$lte": new_start_date }}, { "type" : "spectra"}] },{"file_name" : 1 })
+
+        except Exception,e:
+            print e
+
+    return render(request, 'earthquakes/plot.html', { 'files' : files_collection, 'datetime' : get_datetime } )
