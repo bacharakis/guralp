@@ -385,3 +385,15 @@ def plotting_station_files(request):
 
 
         return render(request, 'earthquakes/plot_station.html', { 'files' : files_collection, 'station_code' : station_code } )
+
+def download_files(request):
+
+
+    response = HttpResponse(content_type='text')
+    response['Content-Disposition'] = 'attachment; filename="ABS1_19950513084713.L.dat.smc8.alc00.129ns08.taper__0.0__0.0.d.asc"'
+
+    writer = csv.writer(response)
+    writer.writerow(['First rowBaz'])
+    writer.writerow(['Second rowHeres a quote'])
+
+    return response
