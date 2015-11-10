@@ -8,11 +8,66 @@
 
 <head>
 
-  <script>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
   </script>
+
+  		<style>
+      path {
+        				stroke-width: 1;
+        				fill: none;
+        			}
+
+        			.data1 {
+        				stroke: steelblue;
+        			}
+
+        			.data2 {
+        				stroke: orange;
+        			}
+
+        			.axis {
+        			  shape-rendering: crispEdges;
+        			}
+
+        			.x.axis line {
+        			  stroke: lightgrey;
+        			}
+
+        			.x.axis .minor {
+        			  stroke-opacity: .5;
+        			}
+
+        			.x.axis path {
+        			  display: none;
+        			}
+
+        			.x.axis text {
+        				font-size: 14;
+        			}
+
+        			.y.axis line, .y.axis path {
+        			  fill: none;
+        			  stroke: #000;
+        			}
+
+        			.y.axis text {
+        				font-size: 14;
+        			}
+
+        			.y.axisRight text {
+        				fill: orange;
+        			}
+
+        			.y.axisLeft text {
+        				fill: steelblue;
+        			}
+  		</style>
+
 </head>
 
-<body>
+<body onload="load();">
   <div class="row">
     <h3>Ploting earthquake files</h3>
   </div>
@@ -24,12 +79,15 @@
       <section class="container">
         <div class="large-4 columns text-center">
           <p> Avaliable files</p>
-          <select style="height:200px;" id="leftValues" height=200px multiple>
+          <select style="height:300px;" id="leftValues" height=200px multiple>
             {%for file in files %}
             <option>{{file.file_name}}</option>
 
             {%endfor%}
           </select>
+        </br><input id="processed" type="checkbox"><label for="processed">Pro.</label>
+      <input id="unprocessed" type="checkbox"><label for="unprocessed">Unpro.</label>
+    <input id="spectra" type="checkbox"><label for="spectra">Spec.</label>
         </div>
         <div class="large-4 columns text-center">
           <div class="button-bar text-center">
@@ -41,19 +99,29 @@
                 <a href="#" onClick="btnRight()" class="small button secondary"> >> </a>
 
           </div>
-          <a href="#" onClick="plot()" class="button round">Plot graph</a>
+          <a href="#" onClick='refresh_files("{{datetime}}")' class="button round">Refresh</a>
+        </br><a href="#" id="download_files" onClick="download_files()" class="button round">Download</a>
+      </br>  <a href="#" onClick="plot()" class="button round">Plot</a>
+
         </div>
 
         <div class="large-4 columns text-center">
           <p>Files to plot</p>
-          <select style="height:200px;" id="rightValues" size="5" multiple></select>
+          <select style="height:300px;" id="rightValues" size="5" multiple></select>
         </div>
-
 
       </section>
 
     </div>
   </div>
+
+  <div class="row" style="width:80%">
+    <div>
+      <div id="graph" class="aGraph" ></div>
+    </div>
+  </div>
+
+
 </body>
 
 </html>
