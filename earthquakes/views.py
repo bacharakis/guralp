@@ -266,3 +266,79 @@ def is_number(s):
         return True
     except ValueError:
         return False
+def chart(request):
+
+
+    if request.GET:
+        try:
+            file_name = request.GET['id']
+        except Exception,e:
+            print "Couldn't retreive file name from GET",e
+
+        try:
+            client = MongoClient()
+            db = client.test_database
+        except Exception,e:
+            print "Couldn't connect to mongoDB database"
+
+        try:
+            collection = db.files
+        except Exception,e:
+            print e
+
+        ic=collection.find_one({"file_name" : file_name })
+
+
+        if ic["status"] == "spectra":
+
+            data_fr,data_sd =  [],[]
+            counter=0
+
+            for c in ic["data"]:
+                first,second,third = c.split()
+                counter+=1
+                if is_number(first) and is_number(second) and is_number(third):
+                    data_fr.append([float(first), float(second)])
+                    data_sd.append([float(first), float(third)])
+                elif counter==1:
+                    data_fr.append([first,second])
+                    data_sd.append([first,third])
+
+            for c in data_fr:
+                print c
+            chart_fr = gchart.LineChart(SimpleDataSource(data=data_fr))
+            chart_sd = gchart.LineChart(SimpleDataSource(data=data_sd))
+
+
+
+
+            return render(request, 'earthquakes/chart_multiple.html', { 'chart_fr' : chart_fr , 'chart_sd' : chart_sd } )
+
+
+
+
+        else:
+
+            data  =  []
+
+            ic=collection.find_one({"file_name" : file_name })
+            counter=0
+            for c in ic["data"]:
+                first,second= c.split()
+                counter+=1
+                #check if the data retreived ar numbers
+                if is_number(first) and is_number(second):
+                    data.append([float(first), float(second)])
+                #if there are not numbers, check if they are labels
+                elif counter==1:
+                    data.append([first, second])
+                #data are not consistened
+                else:
+                    return render(request, 'earthquakes/404f.html')
+
+
+            chart = gchart.LineChart(SimpleDataSource(data=data))
+            for c in data:
+                print c
+
+            return render(request, 'earthquakes/chart.html', { 'point_chart' : chart } )
