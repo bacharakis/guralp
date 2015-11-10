@@ -260,3 +260,9 @@ def plotting_files(request):
             print e
 
     return render(request, 'earthquakes/plot.html', { 'files' : files_collection, 'datetime' : get_datetime } )
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
