@@ -1,0 +1,54 @@
+{% extends "foundation/base.html" %} {% block base_body %} {% load static %}
+<script src="{% static 'earthquakes/pikaday.js' %}" type="text/javascript"></script>
+<script src="{% static 'earthquakes/functions.js' %}" type="text/javascript"></script>
+<script src="{% static 'earthquakes/moment.js' %}" type="text/javascript"></script>
+<script src="{% static 'earthquakes/sortable.js' %}" type="text/javascript"></script>
+<script src="{% static 'earthquakes/Chart.js' %}" type="text/javascript"></script>
+<script src="{% static 'earthquakes/html2canvas.js' %}" type="text/javascript"></script>
+<html>
+
+<head>
+
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+  </script>
+<body>
+
+  <div class="row">
+    <h3>Welcome to earthquakes database by itsak.gr</h3>
+  </div>
+  </br>
+
+  <div class="row" id="my_chart">
+
+  {{ chart_fr.as_html }}
+
+<a href="#" onClick="get_image()" class="small button secondary">Save images</a>
+</div>
+<div class="row" id="my_chart">
+
+{{ chart_sd.as_html }}
+</div>
+<div class="row" id="my_chart">
+
+{{ chart_pv.as_html }}
+</div>
+<div class="row" id="my_chart">
+
+{{ chart_pa.as_html }}
+</div>
+<div class="row" id="my_chart">
+
+{{ chart_rv.as_html }}
+</div>
+<div class="row" id="my_chart">
+
+{{ chart_aa.as_html }}
+</div>
+<div class="row" id="my_div">
+</div>
+</body>
+
+</html>
+{% endblock base_body %}

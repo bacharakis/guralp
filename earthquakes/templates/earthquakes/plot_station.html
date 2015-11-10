@@ -13,6 +13,10 @@
       google.load("visualization", "1", {packages:["corechart"]});
   </script>
 
+<script>
+
+</script>
+<script src="http://mbostock.github.com/d3/d3.v2.js"></script>
   		<style>
       path {
         				stroke-width: 1;
@@ -72,7 +76,7 @@
     <h3>Ploting earthquake files</h3>
   </div>
   <div class="row">
-    <p>Information about the earthquake activity at: {{ datetime }}</p>
+    <p>Information about the earthquake activity at: {{ station_code }}</p>
   </div>
   <div class="row">
     <div class="large-10 columns">
@@ -85,7 +89,7 @@
 
             {%endfor%}
           </select>
-        </br><input id="processed" type="checkbox"><label for="processed">Pro.</label>
+        </br><input id="processed" value="selected" type="checkbox"><label for="processed">Pro.</label>
       <input id="unprocessed" type="checkbox"><label for="unprocessed">Unpro.</label>
     <input id="spectra" type="checkbox"><label for="spectra">Spec.</label>
         </div>
@@ -99,9 +103,9 @@
                 <a href="#" onClick="btnRight()" class="small button secondary"> >> </a>
 
           </div>
-          <a href="#" onClick='refresh_files("{{datetime}}")' class="button round">Refresh</a>
-        </br><a href="#" id="download_files" onClick="download_files()" class="button round">Download</a>
-      </br>  <a href="#" onClick="plot()" class="button round">Plot</a>
+          <a href="#" onClick='refresh_station_files("{{station_code}}")' class="button round">Refresh</a>
+        </br><a id="download_files" href="#" onClick="download_files()" class="button round">Download</a>
+      </br>  <a href="#" onClick="plot_graph()" class="button round">Plot</a>
 
         </div>
 
@@ -109,6 +113,7 @@
           <p>Files to plot</p>
           <select style="height:300px;" id="rightValues" size="5" multiple></select>
         </div>
+
 
       </section>
 
@@ -120,7 +125,6 @@
       <div id="graph" class="aGraph" ></div>
     </div>
   </div>
-
 
 </body>
 
